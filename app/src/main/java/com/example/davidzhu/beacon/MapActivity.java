@@ -1,14 +1,13 @@
 package com.example.davidzhu.beacon;
 
+import android.content.pm.PackageManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
+import android.support.v4.content.ContextCompat;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.UiSettings;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -37,5 +36,21 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        // Disables map toolbar from appearing when marker is clicked
+        UiSettings mUiSettings = mMap.getUiSettings();
+        mUiSettings.setMapToolbarEnabled(false);
+
+        enableMyLocation();
     }
+
+    /**
+     * Enables the My Location layer if the fine location permission has been granted.
+     */
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
+    }
+
 }
