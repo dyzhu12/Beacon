@@ -15,6 +15,7 @@
         android:background="#ffffff"
         android:id="@+id/toolbar"
         android:clickable="true"
+        android:elevation="4dp"
         android:layout_alignParentBottom="true">
 
             <RelativeLayout
