@@ -44,6 +44,18 @@
     </Toolbar>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/centerLocation"
+        android:src="@drawable/ic_my_location_24dp"
+        app:backgroundTint="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_above="@+id/createBeacon"
+        android:layout_alignParentEnd="true" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/createBeacon"
         android:src="@android:drawable/ic_input_add"
         android:tint="@android:color/white"
@@ -52,7 +64,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_above="@+id/toolbar"
+        android:layout_above="@id/toolbar"
         android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
