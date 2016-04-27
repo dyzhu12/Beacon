@@ -3,7 +3,7 @@
 Find an issue.
 
 ### Basics
-Let's not push stuff to master.
+Let's not push stuff to master. You might have to do a gradle clean after checking out a new branch. Typically, waiting for the gradle sync to finish is enough for Android Studio to be happy, but if there are build errors, gradle clean should do the trick.
 ```
 $ git checkout -b [my-feature-branch]
 # Do your awesome feature changes here
