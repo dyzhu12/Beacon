@@ -1,4 +1,6 @@
 <resources>
+
+    <!-- Home Screen Group-->
     <string name="app_name">Beacon</string>
     <string name="title_activity_map">Map</string>
     <string name="list_beacons">List Beacons</string>
@@ -11,4 +13,31 @@
 
     <string name="action_settings">Settings</string>
     <string name="search_hint">Search Beacons</string>
+
+    <!-- Create Beacon Name Group -->
+    <string name="create_beacon_name_label">Name*</string>
+    <string name="create_beacon_name">Beacon Name</string>
+
+    <!-- Address Group -->
+    <string name="create_beacon_address_label">Address*</string>
+    <string name="create_beacon_address">Street Address</string>
+
+    <!-- Create Beacon Tags Group -->
+    <string name="create_beacon_tag_label">Tags*</string>
+    <string name="create_beacon_tag">Choose tags</string>
+
+    <!-- Create Beacon Phone Group -->
+    <string name="create_beacon_phone_label">Phone</string>
+    <string name="create_beacon_phone">Primary Phone Number</string>
+
+    <!-- Create Beacon Website Group -->
+    <string name="create_beacon_web_label">Website</string>
+    <string name="create_beacon_web">Official Website</string>
+
+    <!-- Hours Group -->
+    <string name="create_beacon_hours_label">Hours</string>
+    <string name="create_beacon_hours">Select days and hours</string>
+
+    <!-- Photos Group -->
+    <string name="create_beacon_photos_label">Photos</string>
 </resources>

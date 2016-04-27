@@ -1,5 +1,6 @@
 package com.example.davidzhu.beacon;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +16,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -139,5 +145,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         return true;
     }
 
-
+    public void launchCreateBeacon(View view) {
+        Intent intent = new Intent(this, CreateBeaconActivity.class);
+        startActivity(intent);
+    }
 }
