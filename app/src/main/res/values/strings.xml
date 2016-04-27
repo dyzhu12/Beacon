@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Beacon</string>
     <string name="title_activity_map">Map</string>
+    <string name="list_beacons">List Beacons</string>
+    <string name="filter">Filter</string>
+    <string name="search_for_beacon">Search Beacons</string>
 </resources>
