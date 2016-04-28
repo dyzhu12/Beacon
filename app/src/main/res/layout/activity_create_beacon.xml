@@ -37,7 +37,8 @@
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/create_beacon_name"/>
+                    android:hint="@string/create_beacon_name"
+                    android:textCursorDrawable="@null"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -66,7 +67,14 @@
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/create_beacon_address"/>
+                    android:hint="@string/create_beacon_address"
+                    android:textCursorDrawable="@null"/>
+                <fragment
+                    android:id="@+id/create_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="128dp"
+                    tools:context="com.example.davidzhu.beacon.CreateBeaconActivity"
+                    class="com.google.android.gms.maps.SupportMapFragment"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -96,7 +104,8 @@
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/create_beacon_tag"/>
+                    android:hint="@string/create_beacon_tag"
+                    android:textCursorDrawable="@null"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -126,7 +135,8 @@
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/create_beacon_phone"/>
+                    android:hint="@string/create_beacon_phone"
+                    android:textCursorDrawable="@null"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -149,19 +159,21 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/create_beacon_web_label"/>
+
                 <EditText
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/create_beacon_web"/>
+                    android:hint="@string/create_beacon_web"
+                    android:textCursorDrawable="@null"/>
 
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
             android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -186,7 +198,8 @@
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/create_beacon_hours"/>
+                    android:hint="@string/create_beacon_hours"
+                    android:textCursorDrawable="@null"/>
 
             </LinearLayout>
         </LinearLayout>
