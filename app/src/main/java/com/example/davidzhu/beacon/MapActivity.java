@@ -17,10 +17,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-
 import android.location.Location;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -138,6 +136,14 @@ public class MapActivity extends FragmentActivity implements
 
 
         user = ParseUser.getCurrentUser();
+
+        SearchView searchBar = (SearchView) findViewById(R.id.main_search);
+        searchBar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                launchSearch();
+            }
+        });
+
     }
 
     protected void onResume(){
@@ -195,6 +201,7 @@ public class MapActivity extends FragmentActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
     }
 
+
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location services connected.");
@@ -212,6 +219,7 @@ public class MapActivity extends FragmentActivity implements
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
         }
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -515,4 +523,10 @@ public class MapActivity extends FragmentActivity implements
         startActivity(intent);
         return false;
     }
+
+    private void launchSearch() {
+        Intent intent = new Intent(this, search.class);
+        startActivity(intent);
+    }
+
 }
