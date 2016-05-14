@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/my_saved_beacons"
+            android:icon="@drawable/ic_star_24dp"
+            android:title="My Saved Beacons" />
+        <item
+            android:id="@+id/my_created_beacons"
+            android:icon="@drawable/ic_add_24dp"
+            android:title="My Created Beacons" />
+        <item
+            android:id="@+id/notification_settings"
+            android:icon="@drawable/ic_notifications_24dp"
+            android:title="Notification Settings" />
+        <item
+            android:id="@+id/my_account"
+            android:icon="@drawable/ic_account_box_24dp"
+            android:title="My Account" />
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_about_outline_24dp"
+            android:title="About" />
+
+    </group>
+
+</menu>
