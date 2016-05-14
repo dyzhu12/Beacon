@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_account_circle"
         android:tint="@android:color/white"
-        android:backgroundTint="@color/colorPrimary" />
+        android:backgroundTint="@color/colorPrimary"/>
 
     <!-- display username -->
     <TextView

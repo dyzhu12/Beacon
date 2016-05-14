@@ -5,61 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.davidzhu.beacon.MapActivity"
-    >
+    tools:context="com.example.davidzhu.beacon.MapActivity">
 
     <!-- App Bar -->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:theme="@style/AppBarTheme"
-        >
-    <!--android:layout_gravity="center_horizontal"-->
+        android:layout_margin="16dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@android:color/white"
             android:elevation="4dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-           >
-            <!--android:layout_margin="16dp"
-            android:weightSum="1"
-            android:theme="@style/ThemeOverlay.AppCompat.Light"-->
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-         <!--android:theme="@style/Theme.AppCompat.Light"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
-
-           <!-- <LinearLayout
-                android:orientation="horizontal"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:layout_height="match_parent"
+                android:paddingRight="8dp"
+                android:paddingLeft="0dp">
 
-                <ImageButton
-                    android:id="@+id/menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_menu_24dp"
-                    android:background="@android:color/transparent"
-                    android:paddingRight="8dp"/>
-                <EditText
+                <!-- @Sasha make sure to give the placeholder a value of Search for Beacon" -->
+                <android.support.v7.widget.SearchView
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/search_for_beacon"
                     android:background="@android:color/transparent"
                     android:layout_gravity="center"
                     android:gravity="left"
                     android:textCursorDrawable="@null"/>
                 <ImageButton
+                    android:layout_gravity="center"
+                    android:gravity="left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_keyboard_voice_24dp"/>
-            </LinearLayout> -->
+            </LinearLayout>
+
+
 
         </android.support.v7.widget.Toolbar>
 
