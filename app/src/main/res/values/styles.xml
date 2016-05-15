@@ -22,9 +22,4 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppBarTheme" parent="AppTheme" />
-
-    <style name="PickerTheme" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/colorPrimary</item>
-    </style>
-
 </resources>
