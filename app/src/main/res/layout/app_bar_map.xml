@@ -46,8 +46,6 @@
                     android:src="@drawable/ic_keyboard_voice_24dp"/>
             </LinearLayout>
 
-
-
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

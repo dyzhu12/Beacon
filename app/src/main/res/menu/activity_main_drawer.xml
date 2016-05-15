@@ -21,10 +21,7 @@
         <item
             android:id="@+id/about"
             android:icon="@drawable/ic_about_outline_24dp"
-            android:title="About"
-            />
-        <!--android:onClick="onNavigationItemSelected"-->
-
+            android:title="About" />
     </group>
 
 </menu>

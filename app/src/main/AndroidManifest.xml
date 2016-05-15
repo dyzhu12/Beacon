@@ -45,7 +45,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity" />
         </activity>
-        
+
         <activity
             android:name=".AboutActivity"
             android:label="About"
