@@ -66,6 +66,7 @@
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_above="@id/list_filter_icons"
         android:layout_alignParentEnd="true"
-        app:theme="@style/AppTheme"/>
+        app:theme="@style/AppTheme"
+        android:onClick="launchCreateBeacon"/>
 
 </RelativeLayout>
