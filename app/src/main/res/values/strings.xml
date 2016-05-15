@@ -6,7 +6,7 @@
     <string name="list_beacons">List Beacons</string>
     <string name="filter">Filter</string>
     <string name="search_for_beacon">Search Beacons</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="about">About</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

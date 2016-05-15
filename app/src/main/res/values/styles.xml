@@ -7,7 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="CreateBeaconAppBarTheme" parent="AppTheme">
+
+    <style name="BeaconAppBarTheme" parent="AppTheme">
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 

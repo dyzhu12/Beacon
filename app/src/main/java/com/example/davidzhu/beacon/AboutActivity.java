@@ -19,10 +19,5 @@ public class AboutActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-
-//        String attribution_text = GoogleApiAvailability.getInstance().getOpenSourceSoftwareLicenseInfo(this);
-//        System.out.println(attribution_text);
-//        System.out.println("hi!");
-
     }
 }
