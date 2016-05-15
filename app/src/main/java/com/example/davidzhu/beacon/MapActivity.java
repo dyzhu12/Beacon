@@ -3,8 +3,10 @@ package com.example.davidzhu.beacon;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -17,6 +19,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -123,9 +128,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle menu nav drawer item clicks here.
         int id = item.getItemId();
+        Intent intent;
 
         if (id == R.id.my_saved_beacons) {
-            // Handle the camera action
+            // Handle the my saved beacons action
         } else if (id == R.id.my_created_beacons) {
 
         } else if (id == R.id.notification_settings) {
@@ -133,8 +139,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else if (id == R.id.my_account) {
 
         } else if (id == R.id.about) {
-
+            intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
