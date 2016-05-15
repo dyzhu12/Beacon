@@ -47,4 +47,7 @@
     <string name="app_version">Version 1.0</string>
     <string name="attribution_text"></string>
 
+    <!-- Create Beacon Times -->
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
 </resources>
