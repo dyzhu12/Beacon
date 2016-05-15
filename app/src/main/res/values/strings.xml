@@ -43,4 +43,8 @@
 
     <!-- Photos Group -->
     <string name="create_beacon_photos_label">Photos</string>
+
+    <string name="app_version">Version 1.0</string>
+    <string name="attribution_text"></string>
+
 </resources>
