@@ -193,11 +193,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/create_beacon_hours_label"/>
                 <EditText
+                    android:id="@+id/create_beacon_date_text"
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/create_beacon_hours"
-                    android:textCursorDrawable="@null"/>
+                    android:textCursorDrawable="@null"
+                    android:onClick="selectBeaconDate"
+                    />
 
             </LinearLayout>
         </LinearLayout>
