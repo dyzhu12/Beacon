@@ -231,7 +231,9 @@
                     android:layout_height="64dp"
                     android:src="@android:drawable/ic_input_add"
                     android:tint="#707070"
-                    android:background="#cccccc"/>
+                    android:background="#cccccc"
+                    android:onClick="addPhoto"
+                    android:id="@+id/add_photo_button"/>
 
             </LinearLayout>
         </LinearLayout>
