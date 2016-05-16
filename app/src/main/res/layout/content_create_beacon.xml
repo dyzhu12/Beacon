@@ -229,9 +229,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:src="@android:drawable/ic_input_add"
-                    android:tint="#707070"
-                    android:background="#cccccc"/>
+                    android:src="@drawable/ic_add_24dp"
+                    android:background="#cccccc"
+                    android:onClick="addPhoto"
+                    android:id="@+id/add_photo_button"/>
 
             </LinearLayout>
         </LinearLayout>

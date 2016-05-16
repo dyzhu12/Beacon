@@ -1,19 +1,24 @@
 package com.example.davidzhu.beacon;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -21,7 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 
-import java.text.DateFormat;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +43,10 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
     private Date beaconDate;
     private String startTime;
     private String endTime;
+
+    static final int CAMERA_REQUEST = 0;
+    static final int GALLERY_REQUEST = 1;
+
 
     private Calendar calendar = Calendar.getInstance();
 
@@ -150,6 +159,84 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
 
         String timeText = dateFormat.format(beaconDate) + " from  " + startTime + " to " + endTime;
         dateText.setText(timeText);
+    }
+
+    /*
+     * Handler for ImageButton for adding photos
+     */
+    public void addPhoto(final View v) {
+
+        final CharSequence[] items = { "Take Photo", "Choose Photo" };
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+        dialogBuilder.setTitle(R.string.change_photo);
+        dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals("Take Photo")) {
+                    takePhoto(v);
+                } else if (items[item].equals("Choose Photo")) {
+                    choosePhoto(v);
+                }
+            }
+        });
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+
+        dialogBuilder.show();
+    }
+
+    public void takePhoto(View v) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, CAMERA_REQUEST);
+        }
+
+    }
+    public void choosePhoto(View v) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALLERY_REQUEST);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        ImageButton imageButton = (ImageButton) findViewById(R.id.add_photo_button);
+        switch(requestCode) {
+            case CAMERA_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    imageButton.setImageDrawable(null);
+                    imageButton.setBackgroundColor(Color.TRANSPARENT);
+
+                    Bitmap photo = (Bitmap) imageReturnedIntent.getExtras().get("data");
+                    imageButton.setImageBitmap(photo);
+
+                }
+                break;
+            case GALLERY_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    imageButton.setImageDrawable(null);
+                    imageButton.setBackgroundColor(Color.TRANSPARENT);
+
+                    Uri uri = imageReturnedIntent.getData();
+
+                    try {
+
+                        Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                        int thumbFactor = 4; // choose a power of 2
+                        Bitmap thumb = Bitmap.createScaledBitmap(image, image.getWidth()/thumbFactor, image.getHeight()/thumbFactor, false);
+
+                        imageButton.setImageBitmap(thumb);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            default: break;
+        }
+
     }
 
 }
