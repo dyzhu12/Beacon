@@ -53,7 +53,8 @@
         android:layout_marginRight="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_above="@+id/createBeacon"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="centerUserLocation"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/createBeacon"
