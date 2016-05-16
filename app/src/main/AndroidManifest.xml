@@ -65,6 +65,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity"/>
         </activity>
+        <activity
+            android:name=".FilterBeaconActivity"
+            android:label="Filter"
+            android:parentActivityName="com.example.davidzhu.beacon.MapActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.davidzhu.beacon.MapActivity"/>
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <!-- Starts Within Group -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/starts_within"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/within"
+                        android:textColor="@color/lightGray"
+                        android:layout_marginLeft="8dp"/>
+                </LinearLayout>
+
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+                    <RadioButton
+                        android:id="@+id/any_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/any"
+                        android:checked="true"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/one_hour"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/three_hour"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/six_hour"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/twelve_hour"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <!-- Rating Group -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/rating"/>
+
+                    <TextView
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/at_least"
+                        android:textColor="@color/lightGray"/>
+                </LinearLayout>
+
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+                    <RadioButton
+                        android:id="@+id/any_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/any"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:checked="true"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/twentyfive"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/onehundred"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/fivehundred"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <!-- Distance Group -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance"/>
+                    <TextView
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/less_than"
+                        android:textColor="@color/lightGray"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp">
+
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:thumb="@drawable/thumb_dragger"
+                        android:max="20"
+                        android:layout_alignParentLeft="true"
+                        android:id="@+id/seekBar"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toStartOf="@+id/distance_text" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/distance_filler"
+                        android:textColor="@color/colorAccent"
+                        android:id="@+id/distance_text"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="80dp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <!-- Soirt Group -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:layout_gravity="right" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sort"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/by"
+                        android:textColor="@color/lightGray"
+                        android:layout_marginLeft="8dp"/>
+                </LinearLayout>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+                    <RadioButton
+                        android:id="@+id/distance_filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/distance"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:checked="true"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/popularity"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/highest_match"
+                        android:button="@null"
+                        android:padding="16dp"
+                        android:textColor="@color/filter_text_color"
+                        android:background="@drawable/checkbox_background"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#ffffff"
+        android:id="@+id/list_filter_icons"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="2"
+                android:layout_alignParentStart="true">
+                <TextView
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:layout_gravity="center_vertical"
+                    android:textAllCaps="true"/>
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/apply"
+                    android:textAllCaps="true"
+                    android:layout_marginRight="16dp"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+</RelativeLayout>

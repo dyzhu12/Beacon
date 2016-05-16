@@ -256,4 +256,10 @@ public class MapActivity extends AppCompatActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f));
 
     }
+
+    // listener for Filter toolbar button
+    public void showFilters(View view) {
+        Intent intent = new Intent(this, FilterBeaconActivity.class);
+        startActivity(intent);
+    }
 }

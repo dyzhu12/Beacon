@@ -58,9 +58,34 @@
 
     <!-- MISC -->
     <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
 
     <!-- My Account Strings -->
     <string name="real_name">First Last</string>
     <string name="change_password">Change Password</string>
     <string name="saved_info">Saved Information</string>
+
+    <!-- Filter Beacon Strings -->
+    <string name="starts_within">Starts</string>
+    <string name="within">within</string>
+    <string name="any">Any</string>
+    <string name="one_hour">1 hr</string>
+    <string name="three_hour">3 hr</string>
+    <string name="six_hour">6 hr</string>
+    <string name="twelve_hour">12 hr</string>
+
+    <string name="rating">Rating</string>
+    <string name="at_least">at least</string>
+    <string name="twentyfive">25</string>
+    <string name="onehundred">100</string>
+    <string name="fivehundred">500</string>
+
+    <string name="distance">Distance</string>
+    <string name="distance_filler">0 mi</string>
+    <string name="less_than">less than</string>
+
+    <string name="sort">Sort</string>
+    <string name="by">by</string>
+    <string name="popularity">Popularity</string>
+    <string name="highest_match">Highest Match</string>
 </resources>
