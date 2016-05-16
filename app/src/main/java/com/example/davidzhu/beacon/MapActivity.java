@@ -195,8 +195,8 @@ public class MapActivity extends AppCompatActivity implements
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.search_bar);
-        SearchView searchview = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        MenuItem searchItem = menu.findItem(R.id.search_bar);
+//        SearchView searchview = (SearchView) MenuItemCompat.getActionView(searchItem);
 
         return super.onCreateOptionsMenu(menu);
     }
