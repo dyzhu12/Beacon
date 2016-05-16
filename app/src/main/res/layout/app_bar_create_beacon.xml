@@ -26,7 +26,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!-- wtf android -->
     <include layout="@layout/content_create_beacon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -3,10 +3,7 @@ package com.example.davidzhu.beacon;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -15,31 +12,66 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 
+import android.location.Location;
+import android.widget.TextView;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+public class MapActivity extends AppCompatActivity implements
+        OnMapReadyCallback,
+        NavigationView.OnNavigationItemSelectedListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        LocationListener{
 
     private GoogleMap mMap;
+    private GoogleApiClient mGoogleApiClient;
+    private LocationRequest mLocationRequest;
+    private Location mCurrentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        //creates GoogleApiClient object
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+        }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //creates LocationRequest object
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000); //10s in millisecs
+        mLocationRequest.setFastestInterval(5000); //5s in millisecs
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -50,6 +82,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onStart(){
+        //Android Developers documentation states to call connect() in onStart()
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        //Android Developers documentation states to call disconnect() in onStop()
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
 
@@ -84,6 +139,46 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private void moveToLocation(Location location) {
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        float zoomLevel = 15f;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                mCurrentLocation = mLastLocation;
+                moveToLocation(mCurrentLocation);
+            } else {
+                //make location request if lastLocation was not found
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                moveToLocation(mCurrentLocation);
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("LocationServices", "Connection suspended");
+
+    }
+
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i("LocationServices",
+                "Connection failed: ConnectionResult.getErrorCode() " + connectionResult.getErrorCode());
+    }
+
+    public void onLocationChanged(Location location){
+        mCurrentLocation = location;
+        moveToLocation(location);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -101,10 +196,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         inflater.inflate(R.menu.main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search_bar);
-        SearchView searchview = (SearchView) MenuItemCompat.getActionView(searchItem); //null pointer exception
+        SearchView searchview = (SearchView) MenuItemCompat.getActionView(searchItem);
 
-        //return true;
-        //configure search info and add event listeners here
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -148,8 +241,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return true;
     }
 
+    //listener for Create Beacon fab
     public void launchCreateBeacon(View view) {
         Intent intent = new Intent(this, CreateBeaconActivity.class);
         startActivity(intent);
     }
+
+    //listener for User Location fab
+    public void centerUserLocation(View view){
+        LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f));
+
+    }
+
+
 }
