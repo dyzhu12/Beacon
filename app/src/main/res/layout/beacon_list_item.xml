@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:id="@+id/beacon_list_item_textview"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:layout_gravity="center"
+    android:drawableLeft="@drawable/ic_place_24dp"
+    android:drawableTint="@android:color/darker_gray"
+    android:drawableRight="@drawable/ic_clear_24dp"
+    android:drawablePadding="16dp"
+    android:singleLine="true"
+    android:text="Update Text with actual beacons"
+    android:textSize="20sp"
+    android:textColor="@android:color/black"/>

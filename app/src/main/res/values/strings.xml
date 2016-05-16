@@ -7,6 +7,8 @@
     <string name="filter">Filter</string>
     <string name="search_for_beacon">Search Beacons</string>
     <string name="about">About</string>
+    <string name="my_created_beacons">My Created Beacons</string>
+    <string name="my_saved_beacons">My Saved Beacons</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

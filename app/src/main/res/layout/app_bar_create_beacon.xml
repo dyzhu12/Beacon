@@ -21,7 +21,7 @@
             app:titleTextColor="@android:color/white"
             android:elevation="4dp"
             android:title="@string/create_beacon"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            app:theme="@style/BeaconAppBarTheme">
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
