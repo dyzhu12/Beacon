@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#ffffff"
+        android:id="@+id/list_filter_icons"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/saved_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saved_filler"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:id="@+id/bullet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bullet"
+                android:layout_toRightOf="@id/saved_count"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:textColor="@android:color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sort_filler"
+                android:layout_toRightOf="@id/bullet"
+                android:layout_centerVertical="true"
+                android:layout_margin="4dp"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filter"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textAllCaps="true"
+                android:layout_marginRight="16dp"/>
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+</RelativeLayout>

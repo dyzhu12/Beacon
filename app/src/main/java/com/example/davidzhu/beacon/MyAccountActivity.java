@@ -16,10 +16,10 @@ import android.widget.TextView;
 public class MyAccountActivity extends AppCompatActivity implements View.OnFocusChangeListener {
 
     // Filler values
-    String userEmail = "scarlettjohansson@gmail.com";
-    String userName = "Scarlett Johansson";
+    private String userEmail = "scarlettjohansson@gmail.com";
+    private String userName = "Scarlett Johansson";
 
-    EditText nameView;
+    private EditText nameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

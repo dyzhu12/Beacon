@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,14 +20,11 @@ import android.view.View;
 
 
 import android.location.Location;
-import android.widget.TextView;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -254,7 +250,7 @@ public class MapActivity extends FragmentActivity implements
     //listener for User Location fab
     public void centerUserLocation(View view){
         LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
 
     }
 
@@ -262,5 +258,12 @@ public class MapActivity extends FragmentActivity implements
     public void showFilters(View view) {
         Intent intent = new Intent(this, FilterBeaconActivity.class);
         startActivity(intent);
+    }
+
+    // Listener for List Beacons
+    public void showBeaconList(View view) {
+        Intent intent = new Intent(this, ListBeaconActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.stay);
     }
 }

@@ -59,6 +59,7 @@
     <!-- MISC -->
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
+    <string name="bullet">&#8226;</string>
 
     <!-- My Account Strings -->
     <string name="real_name">First Last</string>
@@ -108,4 +109,8 @@
     <string name="LoginBtn">Login</string>
     <string name="SignupBtn">Sign Up</string>
     <string name="LogoutBtn">Log Out</string>
+
+    <!-- List Beacon Strings -->
+    <string name="saved_filler">Saved 0</string>
+    <string name="sort_filler">Sort By</string>
 </resources>
