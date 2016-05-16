@@ -221,7 +221,7 @@ public class MapActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle menu nav drawer item clicks here.
         int id = item.getItemId();
-        Intent intent;
+        Intent intent = null;
 
         if (id == R.id.my_saved_beacons) {
             // Handle the my saved beacons action
@@ -230,9 +230,12 @@ public class MapActivity extends AppCompatActivity implements
         } else if (id == R.id.notification_settings) {
 
         } else if (id == R.id.my_account) {
-
+            intent = new Intent(this, MyAccountActivity.class);
         } else if (id == R.id.about) {
             intent = new Intent(this, AboutActivity.class);
+        }
+
+        if (intent != null) {
             startActivity(intent);
         }
 
@@ -253,6 +256,4 @@ public class MapActivity extends AppCompatActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,15f));
 
     }
-
-
 }

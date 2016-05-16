@@ -58,4 +58,9 @@
 
     <!-- MISC -->
     <string name="cancel">Cancel</string>
+
+    <!-- My Account Strings -->
+    <string name="real_name">First Last</string>
+    <string name="change_password">Change Password</string>
+    <string name="saved_info">Saved Information</string>
 </resources>
