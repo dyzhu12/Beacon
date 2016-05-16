@@ -15,14 +15,14 @@
         card_view:cardElevation="4dp"
         card_view:cardPreventCornerOverlap="true"
         card_view:cardUseCompatPadding="true"
-        android:id="@+id/cv">
+        android:id="@+id/cv_special">
 
         <!--<ExpandableListView
             android:id="@+id/search_exp_tags_list"
             android:layout_height="match_parent"
             android:layout_width="match_parent"/>-->
 
-        <TextView android:id="@+id/search_item_text"
+        <TextView android:id="@+id/search_item_text_special"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_margin="8dp"

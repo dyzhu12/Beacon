@@ -46,7 +46,6 @@ public class search extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mCardListView.setLayoutManager(mLayoutManager);
-
         // specify an adapter (see also next example)
         mAdapter = new SearchAdapter(numOfCards);
         mCardListView.setAdapter(mAdapter);
