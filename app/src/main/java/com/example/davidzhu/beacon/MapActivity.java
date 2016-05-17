@@ -259,6 +259,8 @@ public class MapActivity extends FragmentActivity implements
 
     // Listener for List Beacons
     public void showBeaconList(View view) {
+//        Intent intent = new Intent(this, ViewBeaconActivity.class);
+//        startActivity(intent);
         Intent intent = new Intent(this, ListBeaconActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
