@@ -4,10 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 
 /**
@@ -16,10 +14,10 @@ import android.widget.TextView;
 public class MyAccountActivity extends AppCompatActivity implements View.OnFocusChangeListener {
 
     // Filler values
-    String userEmail = "scarlettjohansson@gmail.com";
-    String userName = "Scarlett Johansson";
+    private String userEmail = "scarlettjohansson@gmail.com";
+    private String userName = "Scarlett Johansson";
 
-    EditText nameView;
+    private EditText nameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,10 +1,8 @@
 package com.example.davidzhu.beacon;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,19 +12,18 @@ import android.support.v7.app.ActionBar;
 
 import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
-import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 public class LoginSignupActivity extends AppCompatActivity {
     // Declare Variables
-    Button loginbutton;
-    Button signup;
-    String usernametxt;
-    String passwordtxt;
-    EditText password;
-    EditText username;
+    private Button loginbutton;
+    private Button signup;
+    private String usernametxt;
+    private String passwordtxt;
+    private EditText password;
+    private EditText username;
 
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -34,13 +31,8 @@ public class LoginSignupActivity extends AppCompatActivity {
         // Get the view from main.xml
         setContentView(R.layout.activity_login_signup);
 
-//        Toolbar myToolbar = (Toolbar) findViewById(R.id.login_toolbar);
-//        setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(false);
-
-
-
 
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
@@ -60,11 +52,6 @@ public class LoginSignupActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
-
-
-
-
 
         // Locate EditTexts in main.xml
         username = (EditText) findViewById(R.id.username);

@@ -1,8 +1,8 @@
 package com.example.davidzhu.beacon;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -39,5 +39,15 @@ public class FilterBeaconActivity extends AppCompatActivity implements SeekBar.O
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return(super.onOptionsItemSelected(item));
     }
 }
