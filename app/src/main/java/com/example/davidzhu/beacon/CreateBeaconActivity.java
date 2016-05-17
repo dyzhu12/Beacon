@@ -25,7 +25,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,6 +49,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
 
     static final int CAMERA_REQUEST = 0;
     static final int GALLERY_REQUEST = 1;
+    private Beacon beacon;
 
 
     private Calendar calendar = Calendar.getInstance();
@@ -70,6 +74,8 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         //Date picker
         dateText = (EditText) findViewById(R.id.create_beacon_date_text);
         dateText.setOnFocusChangeListener(this);
+
+        beacon = new Beacon();
     }
 
     @Override
@@ -199,6 +205,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
     public void choosePhoto(View v) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, GALLERY_REQUEST);
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
@@ -225,6 +232,33 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                     try {
 
                         Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
+                        //PARSE IMAGE UPLOAD TEST START****************
+
+                        beacon.setImage(image);
+                        beacon.saveInBackground();
+                        /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        // Compress image to lower quality scale 1 - 100
+                        image.compress(Bitmap.CompressFormat.JPEG, 1, stream);
+                        byte[] imageb = stream.toByteArray();
+
+                        // Create the ParseFile
+                        ParseFile file = new ParseFile("image.png", imageb);
+                        file.saveInBackground();
+
+                        ParseObject imgupload = new ParseObject("ImageUpload");
+
+                        // Create a column named "ImageName" and set the string
+                        imgupload.put("ImageName", "AndroidBegin Logo");
+
+                        // Create a column named "ImageFile" and insert the image
+                        imgupload.put("ImageFile", file);
+
+                        // Create the class and the columns
+                        imgupload.saveInBackground();*/
+
+                        //PARSE IMAGE UPLOAD TEST END******************
+
                         int thumbFactor = 4; // choose a power of 2
                         Bitmap thumb = Bitmap.createScaledBitmap(image, image.getWidth()/thumbFactor, image.getHeight()/thumbFactor, false);
 
