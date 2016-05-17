@@ -106,8 +106,8 @@ public class Beacon extends ParseObject {
     }
 
     //Image
-    public Date getImage(){
-        return getDate("startDate");
+    public ParseFile getImage(){
+        return getParseFile("image");
     }
     public void setImage(Bitmap bitmap){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -127,6 +127,8 @@ public class Beacon extends ParseObject {
     }
     public void setCreator(ParseUser user){
         put("user", user);
+        user.addUnique("created",getObjectId());
+        user.saveInBackground();
     }
 
     //Times Saved
