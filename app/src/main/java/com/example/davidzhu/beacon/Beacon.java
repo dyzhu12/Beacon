@@ -31,6 +31,11 @@ public class Beacon extends ParseObject {
     Int SavedTimes
      */
 
+    /*
+    object.getObjectId()
+    Id is string
+     */
+
     public Beacon(){
 
     }
