@@ -114,7 +114,7 @@ public class MapActivity extends FragmentActivity implements
         UiSettings mUiSettings = mMap.getUiSettings();
         mUiSettings.setMapToolbarEnabled(false);
 
-        //prevents map location button from appearing in top right corner
+        //setMyLocationButtons changes view back to user's current location
         mUiSettings.setMyLocationButtonEnabled(false);
         enableMyLocation();
     }
@@ -130,7 +130,7 @@ public class MapActivity extends FragmentActivity implements
     }
 
     private void moveToNewLocation(Location location){
-             double currentLat = location.getLatitude();
+        double currentLat = location.getLatitude();
         double currentLong = location.getLongitude();
         float zoomLevel = 15f;
 
@@ -259,10 +259,16 @@ public class MapActivity extends FragmentActivity implements
     }
 
     //listener for User Location fab
-    public void centerUserLocation(View view){
-//        LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
-
+    public void centerUserLocation(View view) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (location == null) {
+                //request location updates
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            } else {
+                moveToNewLocation(location);
+            }
+        }
     }
 
     // listener for Filter toolbar button
