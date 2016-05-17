@@ -24,6 +24,7 @@ public class ViewBeaconActivity extends AppCompatActivity {
 
     private Beacon sampleBeacon = new Beacon("Beacon Name", 20, 0.7);
     private ArrayList<Object> beaconItems;
+    private BeaconRecyclerViewAdapter beaconRecyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,9 @@ public class ViewBeaconActivity extends AppCompatActivity {
         sampleBeacon.setWebsite("Sample Website");
         beaconItems = sampleBeacon.getItems();
 
-        beaconContent.setAdapter(new BeaconRecyclerViewAdapter(beaconItems, getApplicationContext()));
+
+        beaconRecyclerAdapter = new BeaconRecyclerViewAdapter(beaconItems, getApplicationContext());
+        beaconContent.setAdapter(beaconRecyclerAdapter);
         beaconContent.setLayoutManager(new LinearLayoutManager(this));
 
         // Only show the edit fab if the user is the owner
@@ -61,6 +64,21 @@ public class ViewBeaconActivity extends AppCompatActivity {
             fab.setLayoutParams(params);
             fab.setVisibility(View.GONE);
         }
+
+        boolean userHasSaved = false;
+        if (userHasSaved) {
+            ImageView saveButton = (ImageView) findViewById(R.id.save_button);
+            saveButton.setOnClickListener(null);
+        }
+
+    }
+
+    public void incrementRating(View view) {
+        beaconItems.set(0, (int) beaconItems.get(0) + 1);
+        ImageView saveButton = (ImageView) findViewById(R.id.save_button);
+        saveButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_star_white_24dp));
+        saveButton.setOnClickListener(null);
+        beaconRecyclerAdapter.notifyDataSetChanged();
     }
 
     // Launch Edit Beacon here
