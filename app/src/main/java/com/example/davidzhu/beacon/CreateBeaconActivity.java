@@ -210,6 +210,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                     imageButton.setImageDrawable(null);
                     imageButton.setBackgroundColor(Color.TRANSPARENT);
 
+                    imageReturnedIntent.getT
                     Bitmap photo = (Bitmap) imageReturnedIntent.getExtras().get("data");
                     imageButton.setImageBitmap(photo);
 

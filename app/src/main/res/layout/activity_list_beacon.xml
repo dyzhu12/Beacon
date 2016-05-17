@@ -3,6 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/beacon_list">
+
+        </ListView>
+    </ScrollView>
+
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -52,7 +64,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:textAllCaps="true"
-                android:layout_marginRight="16dp"/>
+                android:layout_marginRight="16dp"
+                android:onClick="showFiltersForList"/>
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
