@@ -211,14 +211,15 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         ImageButton imageButton = (ImageButton) findViewById(R.id.add_photo_button);
+        Bitmap image = null;
         switch(requestCode) {
             case CAMERA_REQUEST:
                 if (resultCode == RESULT_OK) {
                     imageButton.setImageDrawable(null);
                     imageButton.setBackgroundColor(Color.TRANSPARENT);
 
-                    Bitmap photo = (Bitmap) imageReturnedIntent.getExtras().get("data");
-                    imageButton.setImageBitmap(photo);
+                    image = (Bitmap) imageReturnedIntent.getExtras().get("data");
+                    imageButton.setImageBitmap(image);
 
                 }
                 break;
@@ -231,12 +232,12 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
 
                     try {
 
-                        Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                        image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
                         //PARSE IMAGE UPLOAD TEST START****************
 
-                        beacon.setImage(image);
-                        beacon.saveInBackground();
+                        /*beacon.setImage(image);
+                        beacon.saveInBackground();*/
                         /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         // Compress image to lower quality scale 1 - 100
                         image.compress(Bitmap.CompressFormat.JPEG, 1, stream);
@@ -270,6 +271,11 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                 break;
             default: break;
         }
+        if(image != null) {
+            beacon.setImage(image);
+            beacon.saveInBackground();
+        }
+
 
     }
 
