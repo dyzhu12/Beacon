@@ -1,6 +1,7 @@
 package com.example.davidzhu.beacon;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -54,5 +55,10 @@ public class MyAccountActivity extends AppCompatActivity implements View.OnFocus
     // TODO Save the user's name after editing text
     public void saveName(View v) {
         System.out.println("Saving Name");
+    }
+
+    public void launchChangePassword(View view) {
+        Intent intent = new Intent(this, ChangePasswordActivity.class);
+        startActivity(intent);
     }
 }

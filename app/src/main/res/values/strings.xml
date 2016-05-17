@@ -115,4 +115,11 @@
     <string name="saved">Saved</string>
     <string name="sort_filler">Sort By</string>
     <string name="times">times</string>
+
+    <!-- Change Password Strings -->
+    <string name="enter_password">Enter your current password</string>
+    <string name="pick_password">Pick a new password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
 </resources>
