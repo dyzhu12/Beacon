@@ -32,6 +32,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/create_beacon_name_label"/>
                 <EditText
+                    android:id="@+id/create_beacon_name_text"
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,17 +63,18 @@
                     android:layout_height="wrap_content"
                     android:text="@string/create_beacon_address_label"/>
                 <EditText
+                    android:id="@+id/create_beacon_address_text"
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/create_beacon_address"
                     android:textCursorDrawable="@null"/>
-                <fragment
-                    android:id="@+id/create_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="128dp"
-                    tools:context="com.example.davidzhu.beacon.CreateBeaconActivity"
-                    class="com.google.android.gms.maps.SupportMapFragment"/>
+                <!--<fragment-->
+                    <!--android:id="@+id/create_map"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="128dp"-->
+                    <!--tools:context="com.example.davidzhu.beacon.CreateBeaconActivity"-->
+                    <!--class="com.google.android.gms.maps.SupportMapFragment"/>-->
 
             </LinearLayout>
         </LinearLayout>
@@ -103,6 +105,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/create_beacon_tag"
+                    android:id="@+id/create_beacon_tags_text"
                     android:textCursorDrawable="@null"/>
 
             </LinearLayout>
@@ -130,6 +133,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/create_beacon_phone_label"/>
                 <EditText
+                    android:id="@+id/create_beacon_phone_text"
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,6 +166,7 @@
                     android:text="@string/create_beacon_web_label"/>
 
                 <EditText
+                    android:id="@+id/create_beacon_web_text"
                     android:paddingLeft="0dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

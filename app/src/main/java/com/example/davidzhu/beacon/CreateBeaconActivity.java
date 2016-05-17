@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,12 +29,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -58,9 +65,9 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_beacon);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.create_map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.create_map);
+//        mapFragment.getMapAsync(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.create_beacon_toolbar);
         setSupportActionBar(toolbar);
 
@@ -277,6 +284,47 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         }
 
 
+    }
+
+    public void createBeacon(View view) {
+        EditText nameText = (EditText) findViewById(R.id.create_beacon_name_text);
+        String beaconName = nameText.getText().toString();
+
+        // beacon.setName(beaconName);
+
+        EditText addressText = (EditText) findViewById(R.id.create_beacon_address_text);
+        String address = addressText.getText().toString();
+        double lat = 0.0;
+        double longitude = 0.0;
+        LatLng latlngObject;
+
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> addressList = geocoder.getFromLocationName(address, 1);
+            lat = addressList.get(0).getLatitude();
+            longitude = addressList.get(0).getLongitude();
+
+            Double latE6 = lat * 1E6;
+            Double longE6 = lat * 1E6;
+
+            latlngObject = new LatLng(lat, longitude);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        EditText tagText = (EditText) findViewById(R.id.create_beacon_tags_text);
+        String tags = tagText.getText().toString();
+        ArrayList tagsArray = (ArrayList) Arrays.asList(tags.split("\\s+"));
+
+        EditText phoneText = (EditText) findViewById(R.id.create_beacon_phone_text);
+        String phoneNumber = phoneText.getText().toString();
+
+        EditText webText = (EditText) findViewById(R.id.create_beacon_web_text);
+        String website = webText.getText().toString();
+
+        System.out.println("Finished!");
+
+        finish();
     }
 
 }
