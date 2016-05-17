@@ -112,7 +112,7 @@ public class Beacon extends ParseObject {
     public void setImage(Bitmap bitmap){
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         // Compress image to lower quality scale 1 - 100
-        bitmap.compress(Bitmap.CompressFormat.PNG, 1, stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 20, stream);
         byte[] image = stream.toByteArray();
 
         // Create the ParseFile

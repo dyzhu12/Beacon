@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -26,13 +29,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -51,6 +61,8 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
     static final int GALLERY_REQUEST = 1;
     private Beacon beacon;
 
+    private long startTimeNum;
+    private long endTimeNum;
 
     private Calendar calendar = Calendar.getInstance();
 
@@ -58,9 +70,9 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_beacon);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.create_map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.create_map);
+//        mapFragment.getMapAsync(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.create_beacon_toolbar);
         setSupportActionBar(toolbar);
 
@@ -76,6 +88,19 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         dateText.setOnFocusChangeListener(this);
 
         beacon = new Beacon();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.create_beacon_submit) {
+            createBeacon();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -136,6 +161,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
+                    startTimeNum = calendar.getTimeInMillis();
                     startTime = timeFormat.format(calendar.getTime());
                     selectBeaconHours(false);
                 }
@@ -148,6 +174,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
+                    endTimeNum = calendar.getTimeInMillis();
                     endTime = timeFormat.format(calendar.getTime());
                     updateLabel();
                 }
@@ -235,9 +262,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                         image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
                         //PARSE IMAGE UPLOAD TEST START****************
-
-                        /*beacon.setImage(image);
-                        beacon.saveInBackground();*/
+                        beacon.setImage(image);
                         /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         // Compress image to lower quality scale 1 - 100
                         image.compress(Bitmap.CompressFormat.JPEG, 1, stream);
@@ -279,4 +304,82 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
 
     }
 
+    public void createBeacon() {
+        EditText nameText = (EditText) findViewById(R.id.create_beacon_name_text);
+
+        String beaconName = nameText.getText().toString();
+
+        if (!beaconName.equals(null)) {
+            beacon.setDisplayName(beaconName);
+        }
+
+
+        EditText addressText = (EditText) findViewById(R.id.create_beacon_address_text);
+        String address = addressText.getText().toString();
+
+        if (!address.equals(null)) {
+            beacon.setAddress(address);
+        }
+
+
+        double lat = 0.0;
+        double longitude = 0.0;
+
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> addressList = geocoder.getFromLocationName(address, 1);
+
+            if (addressList.size() > 0) {
+                lat = addressList.get(0).getLatitude();
+                longitude = addressList.get(0).getLongitude();
+
+                ParseGeoPoint geoPoint = new ParseGeoPoint(lat, longitude);
+                beacon.setLocation(geoPoint);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (beaconDate != null) {
+            beaconDate.setTime(startTimeNum);
+            beacon.setStartDate(beaconDate);
+
+            beaconDate.setTime(endTimeNum);
+            beacon.setEndDate(beaconDate);
+
+        }
+
+        EditText tagText = (EditText) findViewById(R.id.create_beacon_tags_text);
+        String[] tags = tagText.getText().toString().split("\\s+");
+        ArrayList<String> tagsArray = new ArrayList<String>();
+        for (int i = 0; i < tags.length; i++) {
+            tagsArray.add(tags[i]);
+        }
+
+        if (tagsArray.size() > 0) {
+            beacon.setTags(tagsArray);
+        }
+
+
+
+        EditText phoneText = (EditText) findViewById(R.id.create_beacon_phone_text);
+        String phoneNumber = phoneText.getText().toString();
+        if (!phoneNumber.equals(null)) {
+            beacon.setPhone(phoneNumber);
+        }
+
+
+
+        EditText webText = (EditText) findViewById(R.id.create_beacon_web_text);
+        String website = webText.getText().toString();
+
+        if (!website.equals(null)) {
+            beacon.setWebsite(website);
+        }
+
+        beacon.setCreator(ParseUser.getCurrentUser());
+        beacon.saveInBackground();
+
+        finish();
+    }
 }
