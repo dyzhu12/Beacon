@@ -111,6 +111,8 @@
     <string name="LogoutBtn">Log Out</string>
 
     <!-- List Beacon Strings -->
-    <string name="saved_filler">Saved 0</string>
+    <string name="temp_saved_count">Saved 3+</string>
+    <string name="saved">Saved</string>
     <string name="sort_filler">Sort By</string>
+    <string name="times">times</string>
 </resources>

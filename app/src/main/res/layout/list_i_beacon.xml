@@ -4,23 +4,65 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_beacon_name"/>
-        <TextView
+            android:id="@+id/list_beacon_name"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"/>
+
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/list_beacon_rating"/>
-        <TextView
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saved"
+                android:textSize="12dp"/>
+            <TextView
+                android:layout_marginLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_beacon_rating"
+                android:textSize="12sp"
+                android:textColor="@color/colorAccent"/>
+            <TextView
+                android:layout_marginLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/times"
+                android:textSize="12dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_beacon_distance"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/distance"
+                android:textSize="12dp"/>
+            <TextView
+                android:layout_marginLeft="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_beacon_distance"
+                android:textSize="12sp"
+                android:textColor="@color/colorAccent" />
+
+        </LinearLayout>
     </LinearLayout>
     <ImageView
         android:layout_alignParentEnd="true"
         android:layout_width="64dp"
-        android:layout_height="64dp" />
+        android:layout_height="64dp"
+        android:background="#cccccc"
+        android:layout_margin="16dp"/>
 </RelativeLayout>

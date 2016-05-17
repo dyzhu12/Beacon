@@ -16,16 +16,15 @@ import java.util.ArrayList;
  */
 public class ListBeaconActivity extends AppCompatActivity {
 
-    // TODO This should be an arraylist of beacons
-    private ArrayList<String> beacons = new ArrayList<String>();
-    private ArrayAdapter<String> adapter;
+    private ArrayList<Beacon> beacons = new ArrayList();
+    private BeaconAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_beacon);
 
-        adapter = new ArrayAdapter<String>(this, R.layout.list_i_beacon, R.id.list_beacon_name, beacons);
+        adapter = new BeaconAdapter(this, R.layout.list_i_beacon, R.id.list_beacon_name, beacons);
 
         // Testing with fake data!
         populateWithFakeData();
@@ -46,10 +45,15 @@ public class ListBeaconActivity extends AppCompatActivity {
     }
 
     public void populateWithFakeData() {
-        beacons.add("Beacon 1");
-        beacons.add("Beacon 2");
-        beacons.add("Beacon 3");
-//        adapter.notifyDataSetChanged();
+        beacons.add(new Beacon("Free Pizza", 53, 0.7));
+        beacons.add(new Beacon("Llamma Extravaganza", 9001, 1.3));
+        beacons.add(new Beacon("Communist Party", 5, 2.0));
+        beacons.add(new Beacon("Free Pizza", 53, 0.7));
+        beacons.add(new Beacon("Llamma Extravaganza", 9001, 1.3));
+        beacons.add(new Beacon("Communist Party", 5, 2.0));
+        beacons.add(new Beacon("Free Pizza", 53, 0.7));
+        beacons.add(new Beacon("Llamma Extravaganza", 9001, 1.3));
+        beacons.add(new Beacon("Communist Party", 5, 2.0));
     }
 
     // Handler for FILTER button in bottom right -- launches Filter Activity
