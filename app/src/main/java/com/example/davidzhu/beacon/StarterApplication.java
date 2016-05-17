@@ -14,6 +14,7 @@ import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 import com.parse.interceptors.ParseLogInterceptor;
@@ -25,12 +26,15 @@ public class StarterApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
+
 
         // Add your initialization code here
         //Parse.initialize(this);
 
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+
+        ParseObject.registerSubclass(Beacon.class);
         Parse.initialize(new Parse.Configuration.Builder(this)
                         .applicationId("beacon")
                         .clientKey(null)  // set explicitly unless clientKey is explicitly configured on Parse server
@@ -39,6 +43,8 @@ public class StarterApplication extends Application {
                         .server("http://107.170.46.252:1337/parse/")
                         .build()
         );
+
+
 
         //ParseUser.enableAutomaticUser();
 /*    ParseUser user = new ParseUser();
@@ -78,7 +84,6 @@ public class StarterApplication extends Application {
         // Optionally enable public read access.
         // defaultACL.setPublicReadAccess(true);
         ParseACL.setDefaultACL(defaultACL, true);
-
 
     }
 }
