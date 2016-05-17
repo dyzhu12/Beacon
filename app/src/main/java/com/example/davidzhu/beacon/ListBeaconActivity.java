@@ -1,12 +1,10 @@
 package com.example.davidzhu.beacon;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
  */
 public class ListBeaconActivity extends AppCompatActivity {
 
-    private ArrayList<Beacon> beacons = new ArrayList();
+    private ArrayList<BeaconTest> beacons = new ArrayList();
     private BeaconAdapter adapter;
 
     @Override
@@ -45,15 +43,15 @@ public class ListBeaconActivity extends AppCompatActivity {
     }
 
     public void populateWithFakeData() {
-        beacons.add(new Beacon("Free Pizza", 53));
-        beacons.add(new Beacon("Llamma Extravaganza", 9001));
-        beacons.add(new Beacon("Communist Party", 5));
-        beacons.add(new Beacon("Free Pizza", 53));
-        beacons.add(new Beacon("Llamma Extravaganza", 9001));
-        beacons.add(new Beacon("Communist Party", 5));
-        beacons.add(new Beacon("Free Pizza", 53));
-        beacons.add(new Beacon("Llamma Extravaganza", 9001));
-        beacons.add(new Beacon("Communist Party", 5));
+        beacons.add(new BeaconTest("Free Pizza", 53));
+        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
+        beacons.add(new BeaconTest("Communist Party", 5));
+        beacons.add(new BeaconTest("Free Pizza", 53));
+        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
+        beacons.add(new BeaconTest("Communist Party", 5));
+        beacons.add(new BeaconTest("Free Pizza", 53));
+        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
+        beacons.add(new BeaconTest("Communist Party", 5));
     }
 
     // Handler for FILTER button in bottom right -- launches Filter Activity

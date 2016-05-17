@@ -2,7 +2,6 @@ package com.example.davidzhu.beacon;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +14,20 @@ import java.util.List;
 /**
  * Created by David Zhu on 5/17/2016.
  */
-public class BeaconAdapter extends ArrayAdapter<Beacon> {
+public class BeaconAdapter extends ArrayAdapter<BeaconTest> {
 
     private Activity activity;
-    private ArrayList<Beacon> beacons;
+    private ArrayList<BeaconTest> beacons;
     private static LayoutInflater inflater = null;
 
     private int resourceId;
 
-    public BeaconAdapter(Activity activity, int resource, int textViewResourceId, List<Beacon> objects) {
+    public BeaconAdapter(Activity activity, int resource, int textViewResourceId, List<BeaconTest> objects) {
         super(activity, resource, textViewResourceId, objects);
 
         try {
             this.activity = activity;
-            this.beacons = (ArrayList<Beacon>) objects;
+            this.beacons = (ArrayList<BeaconTest>) objects;
             this.resourceId = resource;
 
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -65,7 +64,7 @@ public class BeaconAdapter extends ArrayAdapter<Beacon> {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        Beacon currentBeacon = beacons.get(position);
+        BeaconTest currentBeacon = beacons.get(position);
 
         viewHolder.beaconName.setText(currentBeacon.getName());
         viewHolder.beaconRating.setText(Integer.toString(currentBeacon.getRating()));

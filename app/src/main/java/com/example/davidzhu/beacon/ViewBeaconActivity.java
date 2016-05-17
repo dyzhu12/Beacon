@@ -22,7 +22,7 @@ import static com.example.davidzhu.beacon.R.color.colorPrimary;
  */
 public class ViewBeaconActivity extends AppCompatActivity {
 
-    private Beacon sampleBeacon = new Beacon("Beacon Name", 20);
+    private BeaconTest sampleBeacon = new BeaconTest("Beacon Name", 20);
     private ArrayList<Object> beaconItems;
     private BeaconRecyclerViewAdapter beaconRecyclerAdapter;
 
