@@ -46,6 +46,7 @@
         <activity
             android:name=".MapActivity"
             android:label="@string/title_activity_map"/>
+
         <activity
             android:name=".CreateBeaconActivity"
             android:parentActivityName=".MapActivity"
@@ -54,23 +55,35 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity" />
         </activity>
+
         <activity
             android:name=".AboutActivity"
-            android:label="About"
+            android:label="@string/about"
             android:parentActivityName=".MapActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity" />
         </activity>
+
         <activity
             android:name=".LoginSignupActivity"
             android:label="@string/title_activity_login_signup" >
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
-
                     <category android:name="android.intent.category.LAUNCHER" />
                 </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MyCreatedBeaconsActivity"
+            android:label="@string/my_created_beacons"
+            android:parentActivityName=".MapActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.davidzhu.beacon.MapActivity" />
+        </activity>
+
         <activity
             android:name=".MyAccountActivity"
             android:label="My Account"
@@ -80,6 +93,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity"/>
         </activity>
+
         <activity
             android:name=".FilterBeaconActivity"
             android:label="Filter"
@@ -89,6 +103,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity"/>
         </activity>
+
         <activity
             android:name=".ListBeaconActivity"
             android:label="List"

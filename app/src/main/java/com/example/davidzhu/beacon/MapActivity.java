@@ -1,16 +1,16 @@
 package com.example.davidzhu.beacon;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -39,35 +39,37 @@ public class MapActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener{
 
+    public static final String TAG = MapActivity.class.getSimpleName();
+
+    private final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
+
     private GoogleMap mMap;
+
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    private Location mCurrentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        //creates GoogleApiClient object
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
-        }
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //creates GoogleApiClient object
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
         //creates LocationRequest object
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000); //10s in millisecs
-        mLocationRequest.setFastestInterval(5000); //5s in millisecs
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest = LocationRequest.create()
+            .setInterval(10*1000) //10s in millisecs
+            .setFastestInterval(1*1000) //1s in millisecs
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -81,13 +83,10 @@ public class MapActivity extends FragmentActivity implements
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    protected void onStart(){
-        //Android Developers documentation states to call connect() in onStart()
+    protected void onResume(){
+        super.onResume();
         mGoogleApiClient.connect();
-        super.onStart();
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -96,14 +95,6 @@ public class MapActivity extends FragmentActivity implements
             mGoogleApiClient.disconnect();
         }
     }
-
-    @Override
-    protected void onStop() {
-        //Android Developers documentation states to call disconnect() in onStop()
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
 
     /**
      * Manipulates the map once available.
@@ -116,64 +107,88 @@ public class MapActivity extends FragmentActivity implements
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        System.out.println("in onMapReady ");
         mMap = googleMap;
 
         // Disables map toolbar from appearing when marker is clicked
         UiSettings mUiSettings = mMap.getUiSettings();
         mUiSettings.setMapToolbarEnabled(false);
 
-        //prevents map location button from appearing in top right corner
+        //setMyLocationButtons changes view back to user's current location
         mUiSettings.setMyLocationButtonEnabled(false);
         enableMyLocation();
     }
 
     /**
-     * Enables the My Location layer if the fine location permission has been granted.
+     *Checks if ACCESS_FINE_LOCATION permission has been granted. If not, requests the user for it
      */
     private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //check  request fine location permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
         }
     }
 
-    private void moveToLocation(Location location) {
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+    private void moveToNewLocation(Location location){
+        double currentLat = location.getLatitude();
+        double currentLong = location.getLongitude();
         float zoomLevel = 15f;
+
+        LatLng latLng = new LatLng(currentLat, currentLong);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
     }
 
     @Override
-    public void onConnected(Bundle connectionHint) {
+    public void onConnected(Bundle bundle) {
+        Log.i(TAG, "Location services connected.");
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (mLastLocation != null) {
-                mCurrentLocation = mLastLocation;
-                moveToLocation(mCurrentLocation);
-            } else {
-                //make location request if lastLocation was not found
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if(location == null){
+                //request location updates
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-                moveToLocation(mCurrentLocation);
+            } else {
+                moveToNewLocation(location);
             }
+        } else{
+             //ACCESS_FINE_LOCATION_PERMISSION has not been granted (should never get here, b/c onMapReady takes care of permissions)
+              System.out.println("in OnConnected, permissions not granted");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
         }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.i("LocationServices", "Connection suspended");
-
+        Log.i(TAG, "Location services suspended.");
     }
 
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.i("LocationServices",
-                "Connection failed: ConnectionResult.getErrorCode() " + connectionResult.getErrorCode());
+        Log.i("LocationServices", "Connection failed: ConnectionResult.getErrorCode() " + connectionResult.getErrorCode());
     }
 
     public void onLocationChanged(Location location){
-        mCurrentLocation = location;
-        moveToLocation(location);
+        moveToNewLocation(location);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+               String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted
+                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        mMap.setMyLocationEnabled(true);
+                        System.out.println("fine location permission granted, mylocation enabled");
+                    }
+                } else {
+                    // permission denied
+                    Log.d(TAG, "ACCESS_FINE_LOCATION_PERMISSION denied");
+                }
+                return;
+            }
+        }
     }
 
     @Override
@@ -217,9 +232,9 @@ public class MapActivity extends FragmentActivity implements
         Intent intent = null;
 
         if (id == R.id.my_saved_beacons) {
-            // Handle the my saved beacons action
-        } else if (id == R.id.my_created_beacons) {
 
+        } else if (id == R.id.my_created_beacons) {
+            intent = new Intent(this, MyCreatedBeaconsActivity.class);
         } else if (id == R.id.notification_settings) {
 
         } else if (id == R.id.my_account) {
@@ -244,14 +259,21 @@ public class MapActivity extends FragmentActivity implements
     }
 
     //listener for User Location fab
-    public void centerUserLocation(View view){
-        LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
-
+    public void centerUserLocation(View view) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (location == null) {
+                //request location updates
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            } else {
+                moveToNewLocation(location);
+            }
+        }
     }
 
     // listener for Filter toolbar button
     public void showFilters(View view) {
+        System.out.println("in showFilters"); //not working on galaxy s4
         Intent intent = new Intent(this, FilterBeaconActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
