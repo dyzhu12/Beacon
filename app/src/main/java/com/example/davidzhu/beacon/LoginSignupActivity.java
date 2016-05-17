@@ -37,9 +37,9 @@ public class LoginSignupActivity extends AppCompatActivity {
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
 
-        if(ParseUser.getCurrentUser() != null){
-            ParseUser.logOut();
-        }
+//        if(ParseUser.getCurrentUser() != null){
+//            ParseUser.logOut();
+//        }
 //        ParseUser.enableAutomaticUser();
 
 
@@ -86,7 +86,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(
                                             getApplicationContext(),
-                                            "No such user exist, please signup",
+                                            "No such user exists, please signup",
                                             Toast.LENGTH_LONG).show();
                                 }
                             }

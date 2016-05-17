@@ -14,9 +14,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MyCreatedBeaconsActivity extends AppCompatActivity {
-    //for testing purposes only. Need to connect to database
     private TextView itemTextView;
     private ArrayAdapter<String> adapter;
+
+    //fake data for testing purposes
     private ArrayList<String> testArray;
 
     @Override
@@ -24,13 +25,26 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_created_beacons);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_my_created_beacons);
-        setSupportActionBar(toolbar);
-
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
+        //fake data
+        populateFakeData();
 
+        ListView lv = (ListView) findViewById(R.id.list_view_my_created_beacons);
+
+        //TODO replace testArray with database
+        adapter = new ArrayAdapter(this, R.layout.beacon_list_item, R.id.list_item_textview,testArray.toArray());
+        lv.setAdapter(adapter);
+    }
+
+    //TODO need to get working with database
+    public void deleteItem(View view){
+        System.out.println("in OnClickDeleteItem, WHOOO!");
+        adapter.notifyDataSetChanged();
+    }
+
+    public void populateFakeData(){
         testArray = new ArrayList();
         testArray.add("1. Puppies on the Mall");
         testArray.add("2. Coding Party");
@@ -46,19 +60,5 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
         testArray.add("12. ugh");
         testArray.add("13. test scroll");
         testArray.add("14. are we there yet?");
-
-
-        ListView lv = (ListView) findViewById(R.id.list_view_my_created_beacons);
-
-        //TODO replace testArray with database
-        adapter = new ArrayAdapter(this, R.layout.beacon_list_item, R.id.list_item_textview,testArray.toArray());
-        lv.setAdapter(adapter);
     }
-
-    //TODO need to get working with database
-    public void deleteItem(View view){
-        System.out.println("in OnClickDeleteItem, WHOOO!");
-        adapter.notifyDataSetChanged();
-    }
-
 }
