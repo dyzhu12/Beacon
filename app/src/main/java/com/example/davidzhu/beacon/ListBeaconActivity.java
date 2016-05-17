@@ -45,15 +45,15 @@ public class ListBeaconActivity extends AppCompatActivity {
     }
 
     public void populateWithFakeData() {
-        beacons.add(new Beacon("Free Pizza", 53, 0.7));
-        beacons.add(new Beacon("Llamma Extravaganza", 9001, 1.3));
-        beacons.add(new Beacon("Communist Party", 5, 2.0));
-        beacons.add(new Beacon("Free Pizza", 53, 0.7));
-        beacons.add(new Beacon("Llamma Extravaganza", 9001, 1.3));
-        beacons.add(new Beacon("Communist Party", 5, 2.0));
-        beacons.add(new Beacon("Free Pizza", 53, 0.7));
-        beacons.add(new Beacon("Llamma Extravaganza", 9001, 1.3));
-        beacons.add(new Beacon("Communist Party", 5, 2.0));
+        beacons.add(new Beacon("Free Pizza", 53));
+        beacons.add(new Beacon("Llamma Extravaganza", 9001));
+        beacons.add(new Beacon("Communist Party", 5));
+        beacons.add(new Beacon("Free Pizza", 53));
+        beacons.add(new Beacon("Llamma Extravaganza", 9001));
+        beacons.add(new Beacon("Communist Party", 5));
+        beacons.add(new Beacon("Free Pizza", 53));
+        beacons.add(new Beacon("Llamma Extravaganza", 9001));
+        beacons.add(new Beacon("Communist Party", 5));
     }
 
     // Handler for FILTER button in bottom right -- launches Filter Activity

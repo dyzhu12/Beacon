@@ -69,7 +69,9 @@ public class BeaconAdapter extends ArrayAdapter<Beacon> {
 
         viewHolder.beaconName.setText(currentBeacon.getName());
         viewHolder.beaconRating.setText(Integer.toString(currentBeacon.getRating()));
-        viewHolder.beaconDistance.setText(Double.toString(currentBeacon.getDistance()) + " mi");
+
+        // Filler Value
+        viewHolder.beaconDistance.setText(Double.toString(5.5) + " mi");
 
         return view;
     }

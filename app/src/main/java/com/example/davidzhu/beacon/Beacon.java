@@ -20,15 +20,9 @@ public class Beacon {
 
     private int rating;
 
-
-
-    // TEMPORARY FOR TESTING distance should not be in the beacon class -- it should be calculated
-    private double distance;
-
-    Beacon(String name, int rating, double distance) {
+    Beacon(String name, int rating) {
         this.name = name;
         this.rating = rating;
-        this.distance = distance;
     }
 
     public void setName(String name) { this.name = name; }
@@ -48,9 +42,6 @@ public class Beacon {
 
     public void setWebsite(String website) { this.website = website; }
     public String getWebsite() { return website; }
-
-
-    public double getDistance() { return distance; }
 
     public ArrayList<Object> getItems() {
         ArrayList<Object> items = new ArrayList<Object>();
