@@ -1,16 +1,16 @@
 package com.example.davidzhu.beacon;
 
-import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by David Zhu on 5/17/2016.
@@ -25,11 +25,6 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_change_password);
 
         oldPassword = (EditText) findViewById(R.id.old_password);
-
-        oldPassword.requestFocus();
-        InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        keyboard.showSoftInput(oldPassword, 0);
-
         oldPassword.setOnKeyListener(this);
     }
 
@@ -44,16 +39,49 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     }
 
     private void changePassword() {
+        View view = findViewById(R.id.password_container);
+        ViewGroup parent = (ViewGroup) view.getParent();
 
+        int index = parent.indexOfChild(view);
+        parent.removeView(view);
+
+        view = getLayoutInflater().inflate(R.layout.content_change_password, parent, false);
+        parent.addView(view, index);
+
+        TextView newPassword = (TextView) findViewById(R.id.new_password);
+        TextView confirmPassword = (TextView) findViewById(R.id.confirm_password);
+
+        newPassword.setTypeface(Typeface.DEFAULT);
+        confirmPassword.setTypeface(Typeface.DEFAULT);
+        confirmPassword.setOnKeyListener(this);
     }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                 (keyCode == KeyEvent.KEYCODE_ENTER)) {
-            checkPassword(((EditText) v).getText().toString());
-            return true;
+
+            if (v.getId() == R.id.old_password) {
+                checkPassword(((EditText) v).getText().toString());
+                return true;
+            }
+            if (v.getId() == R.id.confirm_password) {
+                confirmPassword(((EditText) v).getText().toString());
+                return true;
+            }
         }
         return false;
+    }
+
+    private void confirmPassword(String v) {
+
+        String newPasswordValue = ((EditText) findViewById(R.id.new_password)).getText().toString();
+
+        if (v.equals(newPasswordValue)) {
+            // Do Parse Password magic here
+        } else {
+            Toast.makeText(getApplicationContext(), "Password Mismatch - Try Again", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
