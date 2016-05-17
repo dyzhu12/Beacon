@@ -191,10 +191,6 @@ public class MapActivity extends FragmentActivity implements
         // Inflate the menu; this adds items to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-
-//        MenuItem searchItem = menu.findItem(R.id.search_bar);
-//        SearchView searchview = (SearchView) MenuItemCompat.getActionView(searchItem);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -258,6 +254,7 @@ public class MapActivity extends FragmentActivity implements
     public void showFilters(View view) {
         Intent intent = new Intent(this, FilterBeaconActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.stay);
     }
 
     // Listener for List Beacons
