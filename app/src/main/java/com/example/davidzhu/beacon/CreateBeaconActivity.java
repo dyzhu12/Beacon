@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -58,6 +60,8 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
     static final int GALLERY_REQUEST = 1;
     private Beacon beacon;
 
+    private long startTimeNum;
+    private long endTimeNum;
 
     private Calendar calendar = Calendar.getInstance();
 
@@ -83,6 +87,19 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         dateText.setOnFocusChangeListener(this);
 
         beacon = new Beacon();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.create_beacon_submit) {
+            createBeacon();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -143,6 +160,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
+                    startTimeNum = calendar.getTimeInMillis();
                     startTime = timeFormat.format(calendar.getTime());
                     selectBeaconHours(false);
                 }
@@ -155,6 +173,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
+                    endTimeNum = calendar.getTimeInMillis();
                     endTime = timeFormat.format(calendar.getTime());
                     updateLabel();
                 }
@@ -242,9 +261,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
                         image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
 
                         //PARSE IMAGE UPLOAD TEST START****************
-
-                        /*beacon.setImage(image);
-                        beacon.saveInBackground();*/
+                        beacon.setImage(image);
                         /*ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         // Compress image to lower quality scale 1 - 100
                         image.compress(Bitmap.CompressFormat.JPEG, 1, stream);
@@ -286,17 +303,18 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
 
     }
 
-    public void createBeacon(View view) {
+    public void createBeacon() {
         EditText nameText = (EditText) findViewById(R.id.create_beacon_name_text);
         String beaconName = nameText.getText().toString();
 
-        // beacon.setName(beaconName);
+        beacon.setDisplayName(beaconName);
 
         EditText addressText = (EditText) findViewById(R.id.create_beacon_address_text);
         String address = addressText.getText().toString();
+        beacon.setAddress(address);
+
         double lat = 0.0;
         double longitude = 0.0;
-        LatLng latlngObject;
 
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
         try {
@@ -304,27 +322,37 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
             lat = addressList.get(0).getLatitude();
             longitude = addressList.get(0).getLongitude();
 
-            Double latE6 = lat * 1E6;
-            Double longE6 = lat * 1E6;
-
-            latlngObject = new LatLng(lat, longitude);
+            ParseGeoPoint geoPoint = new ParseGeoPoint(lat, longitude);
+            beacon.setLocation(geoPoint);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        beaconDate.setTime(startTimeNum);
+        beacon.setStartDate(beaconDate);
+
+        beaconDate.setTime(endTimeNum);
+        beacon.setEndDate(beaconDate);
+
         EditText tagText = (EditText) findViewById(R.id.create_beacon_tags_text);
-        String tags = tagText.getText().toString();
-        ArrayList tagsArray = (ArrayList) Arrays.asList(tags.split("\\s+"));
+//        String tags = tagText.getText().toString();
+//        ArrayList tagsArray = (ArrayList) Arrays.asList(tags.split("\\s+"));
+//        ArrayList<String> tagsArray = new ArrayList<String>(tags.split("\\s+"));
+//        beacon.setTags(tagsArray);
+
 
         EditText phoneText = (EditText) findViewById(R.id.create_beacon_phone_text);
         String phoneNumber = phoneText.getText().toString();
+        beacon.setPhone(phoneNumber);
+
 
         EditText webText = (EditText) findViewById(R.id.create_beacon_web_text);
         String website = webText.getText().toString();
+        beacon.setWebsite(website);
 
-        System.out.println("Finished!");
+
+        beacon.saveInBackground();
 
         finish();
     }
-
 }
