@@ -6,6 +6,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class Beacon extends ParseObject {
         put("endDate", value);
     }
 
-    //StartDate
+    //Image
     public Date getImage(){
         return getDate("startDate");
     }
@@ -119,6 +120,32 @@ public class Beacon extends ParseObject {
         file.saveInBackground();
         put("image",file);
     }
+
+    //Creator
+    public ParseUser getCreator(){
+        return getParseUser("user");
+    }
+    public void setCreator(ParseUser user){
+        put("user", user);
+    }
+
+    //Times Saved
+    public int getTimesSaved(){
+        return getInt("timesSaved");
+    }
+    public void setTimesSaved(){
+        put("timesSaved", 0);
+    }
+
+    /***
+     * Increment the beacon's timesSaved count up or down. N should be 1 or -1.
+     *
+     * @param n is 1 or -1
+     */
+    public void incrementTimesSaved(int n){
+        increment("timesSaved",n);
+    }
+
 
 
 
