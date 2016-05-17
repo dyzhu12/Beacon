@@ -73,7 +73,7 @@
             android:name=".MyAccountActivity"
             android:label="My Account"
             android:parentActivityName="com.example.davidzhu.beacon.MapActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity"/>
@@ -104,6 +104,13 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MyAccountActivity"/>
+        </activity>
+        <activity android:name=".ViewBeaconActivity"
+            android:parentActivityName="com.example.davidzhu.beacon.MapActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.davidzhu.beacon.MapActivity"/>
         </activity>
     </application>
 

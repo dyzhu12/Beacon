@@ -122,4 +122,8 @@
     <string name="new_password">New Password</string>
     <string name="confirm_password">Confirm Password</string>
 
+    <!-- View Beacon -->
+    <string name="save_beacon">Save Beacon</string>
+
+
 </resources>
