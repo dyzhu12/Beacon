@@ -33,6 +33,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -305,13 +306,21 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
 
     public void createBeacon() {
         EditText nameText = (EditText) findViewById(R.id.create_beacon_name_text);
+
         String beaconName = nameText.getText().toString();
 
-        beacon.setDisplayName(beaconName);
+        if (!beaconName.equals(null)) {
+            beacon.setDisplayName(beaconName);
+        }
+
 
         EditText addressText = (EditText) findViewById(R.id.create_beacon_address_text);
         String address = addressText.getText().toString();
-        beacon.setAddress(address);
+
+        if (!address.equals(null)) {
+            beacon.setAddress(address);
+        }
+
 
         double lat = 0.0;
         double longitude = 0.0;
@@ -319,38 +328,56 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
         try {
             List<Address> addressList = geocoder.getFromLocationName(address, 1);
-            lat = addressList.get(0).getLatitude();
-            longitude = addressList.get(0).getLongitude();
 
-            ParseGeoPoint geoPoint = new ParseGeoPoint(lat, longitude);
-            beacon.setLocation(geoPoint);
+            if (addressList.size() > 0) {
+                lat = addressList.get(0).getLatitude();
+                longitude = addressList.get(0).getLongitude();
+
+                ParseGeoPoint geoPoint = new ParseGeoPoint(lat, longitude);
+                beacon.setLocation(geoPoint);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        beaconDate.setTime(startTimeNum);
-        beacon.setStartDate(beaconDate);
+        if (beaconDate != null) {
+            beaconDate.setTime(startTimeNum);
+            beacon.setStartDate(beaconDate);
 
-        beaconDate.setTime(endTimeNum);
-        beacon.setEndDate(beaconDate);
+            beaconDate.setTime(endTimeNum);
+            beacon.setEndDate(beaconDate);
+
+        }
 
         EditText tagText = (EditText) findViewById(R.id.create_beacon_tags_text);
-//        String tags = tagText.getText().toString();
-//        ArrayList tagsArray = (ArrayList) Arrays.asList(tags.split("\\s+"));
-//        ArrayList<String> tagsArray = new ArrayList<String>(tags.split("\\s+"));
-//        beacon.setTags(tagsArray);
+        String[] tags = tagText.getText().toString().split("\\s+");
+        ArrayList<String> tagsArray = new ArrayList<String>();
+        for (int i = 0; i < tags.length; i++) {
+            tagsArray.add(tags[i]);
+        }
+
+        if (tagsArray.size() > 0) {
+            beacon.setTags(tagsArray);
+        }
+
 
 
         EditText phoneText = (EditText) findViewById(R.id.create_beacon_phone_text);
         String phoneNumber = phoneText.getText().toString();
-        beacon.setPhone(phoneNumber);
+        if (!phoneNumber.equals(null)) {
+            beacon.setPhone(phoneNumber);
+        }
+
 
 
         EditText webText = (EditText) findViewById(R.id.create_beacon_web_text);
         String website = webText.getText().toString();
-        beacon.setWebsite(website);
 
+        if (!website.equals(null)) {
+            beacon.setWebsite(website);
+        }
 
+        beacon.setCreator(ParseUser.getCurrentUser());
         beacon.saveInBackground();
 
         finish();
