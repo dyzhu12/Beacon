@@ -7,30 +7,11 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.davidzhu.beacon.AboutActivity">
 
-    <!--app bar-->
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/BeaconAppBarTheme">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/app_bar_about"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="4dp"
-            android:title="@string/about"
-            app:titleTextColor="@android:color/white"
-            android:background="@color/colorPrimary"
-            android:theme="@style/BeaconAppBarTheme">
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="48dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="16dp"
         android:text="@string/app_version"/>
 
 </RelativeLayout>

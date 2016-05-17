@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -35,7 +36,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 
-public class MapActivity extends AppCompatActivity implements
+public class MapActivity extends FragmentActivity implements
         OnMapReadyCallback,
         NavigationView.OnNavigationItemSelectedListener,
         GoogleApiClient.ConnectionCallbacks,

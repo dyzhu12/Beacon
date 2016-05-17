@@ -43,7 +43,7 @@
 
         <activity
             android:name=".MapActivity"
-            android:label="@string/title_activity_map" />
+            android:label="@string/title_activity_map"/>
         <activity
             android:name=".CreateBeaconActivity"
             android:parentActivityName=".MapActivity"
@@ -61,16 +61,6 @@
                 android:value="com.example.davidzhu.beacon.MapActivity" />
         </activity>
         <activity
-            android:name=".loginActivity"
-            android:label="@string/title_activity_login"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-<!--            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
-        <activity
             android:name=".LoginSignupActivity"
             android:label="@string/title_activity_login_signup" >
                 <intent-filter>
@@ -78,13 +68,6 @@
 
                     <category android:name="android.intent.category.LAUNCHER" />
                 </intent-filter>
-        </activity>
-        <activity android:name=".testActivity">
-<!--            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
         <activity
             android:name=".MyAccountActivity"
