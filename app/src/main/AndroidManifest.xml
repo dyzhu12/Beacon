@@ -28,7 +28,10 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--minSdkVersion = 21 -->
+    <!-- SDK version specifications -->
+    <uses-sdk android:minSdkVersion="19"
+        android:targetSdkVersion="23" />
 
     <application
         android:name=".StarterApplication"
@@ -90,6 +93,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MyCreatedBeaconsActivity"
             android:label="@string/my_created_beacons"
@@ -99,6 +103,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity" />
         </activity>
+
+        <activity android:name=".MySavedBeaconsActivity"
+            android:label="@string/my_saved_beacons"
+            android:parentActivityName=".MapActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.davidzhu.beacon.MapActivity" />
+        </activity>
+
         <activity
             android:name=".MyAccountActivity"
             android:label="My Account"
@@ -151,15 +165,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MyAccountActivity" />
         </activity>
-        <activity
-            android:name=".SearchMoreTags"
-            android:label="@string/title_activity_search_more_tags"
-            android:parentActivityName=".Search"
-            android:theme="@style/AppBarTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.davidzhu.beacon.Search" />
-        </activity>
+
     </application>
 
 </manifest>

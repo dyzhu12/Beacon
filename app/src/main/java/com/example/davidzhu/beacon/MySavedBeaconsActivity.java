@@ -1,6 +1,6 @@
 package com.example.davidzhu.beacon;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCreatedBeaconsActivity extends AppCompatActivity {
+public class MySavedBeaconsActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     final ArrayList<String> beaconDisplayNames = new ArrayList<String>();
     final ArrayList<String> beaconIds = new ArrayList<String>();
@@ -23,20 +23,20 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_created_beacons);
+        setContentView(R.layout.activity_my_saved_beacons);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
         adapter = new ArrayAdapter<String>(this, R.layout.beacon_list_item, beaconDisplayNames);
 
-        final ListView listView = (ListView) findViewById(R.id.list_view_my_created_beacons);
+        final ListView listView = (ListView) findViewById(R.id.list_view_my_saved_beacons);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String deleted_beacon_id = beaconIds.get(position);
 
                 ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
@@ -45,20 +45,13 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
                     @Override
                     public void done(List<Beacon> results, ParseException e) {
                         if (e == null) {
-                            for (Beacon beacon : results) { //mostly fixed, but strange behavior when you add beacons (names) in the order:
-                                Intent intent = new Intent(MyCreatedBeaconsActivity.this, ViewBeaconActivity.class);
-                                intent.putExtra("beaconId", beacon.getObjectId());
-                                startActivity(intent);
-                                /*beacon.deleteInBackground();
+                            for (Beacon beacon : results) {
+                                //beacon.deleteInBackground(); //need to do beacon.remove();
                                 beaconIds.clear();
                                 beaconDisplayNames.clear();
                                 adapter.clear();
                                 queryMyCreatedBeacons();
-                                adapter.notifyDataSetChanged();*/
-
-                                //listView.invalidate();
-                                //queryMyCreatedBeacons();
-
+                                adapter.notifyDataSetChanged();
                             }
                         }
                     }
@@ -88,11 +81,9 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
                         beaconDisplayNames.add(beaconDisplayName);
                         adapter.notifyDataSetChanged();
                     }
-                 }
+                }
             }
         });
 
     }
 }
-
-
