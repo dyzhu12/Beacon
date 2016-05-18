@@ -161,7 +161,7 @@ public class Beacon extends ParseObject {
     public ArrayList<Object> getItems() {
         ArrayList<Object> items = new ArrayList<Object>();
 
-        items.add(getInt("timesSaved"));
+        items.add(getInt("popularity"));
 
 
         final SimpleDateFormat timeFormat = new SimpleDateFormat("M/d hh:mm a");
