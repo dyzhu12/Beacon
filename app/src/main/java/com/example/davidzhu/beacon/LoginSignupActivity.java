@@ -24,6 +24,7 @@ public class LoginSignupActivity extends AppCompatActivity {
     private String passwordtxt;
     private EditText password;
     private EditText username;
+    ParseUser user;
 
     /** Called when the activity is first created. */
     public void onCreate(Bundle savedInstanceState) {
@@ -109,13 +110,17 @@ public class LoginSignupActivity extends AppCompatActivity {
 
                 } else {
                     // Save new user data into Parse.com Data Storage
-                    ParseUser user = new ParseUser();
+                    user = new ParseUser();
                     user.setUsername(usernametxt);
                     user.setPassword(passwordtxt);
                     user.signUpInBackground(new SignUpCallback() {
                         public void done(ParseException e) {
                             if (e == null) {
-                                // If user exist and authenticated, send user to Welcome.class
+                                user.put("timeFilter",-1);
+                                user.put("ratingFilter",-1);
+                                user.put("distanceFilter",5);
+                                user.put("sortFilter", "distance");
+                                // If user exist and authenticated, send user to Map
                                 Intent intent = new Intent(
                                         LoginSignupActivity.this,
                                         MapActivity.class);
