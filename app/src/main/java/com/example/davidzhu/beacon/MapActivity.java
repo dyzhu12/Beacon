@@ -309,6 +309,7 @@ public class MapActivity extends FragmentActivity implements
     //listener for Create Beacon fab
     public void launchCreateBeacon(View view) {
         Intent intent = new Intent(this, CreateBeaconActivity.class);
+        intent.putExtra("createBeacon", true);
         startActivity(intent);
     }
 

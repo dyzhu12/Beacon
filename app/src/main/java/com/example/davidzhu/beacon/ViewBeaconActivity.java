@@ -1,8 +1,10 @@
 package com.example.davidzhu.beacon;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +20,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,9 @@ public class ViewBeaconActivity extends AppCompatActivity {
 
     private Beacon beacon;
 
+    private RecyclerView beaconContent;
+    private CollapsingToolbarLayout collapsingToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,15 +50,20 @@ public class ViewBeaconActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final RecyclerView beaconContent = (RecyclerView) findViewById(R.id.beacon_content);
+        beaconContent = (RecyclerView) findViewById(R.id.beacon_content);
 
 
-        final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
         collapsingToolbar.setContentScrimColor(ContextCompat.getColor(getApplicationContext(), colorPrimary));
 
         ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
         query.whereEqualTo("objectId", getIntent().getExtras().get("beaconId"));
+        doQuery(query);
+
+    }
+
+    public void doQuery(ParseQuery query) {
         final ViewBeaconActivity self = this;
 
         query.findInBackground(new FindCallback<Beacon>() {
@@ -75,7 +86,6 @@ public class ViewBeaconActivity extends AppCompatActivity {
                         } catch (ParseException e1) {
                             e1.printStackTrace();
                         }
-
                     }
 
                     beaconRecyclerAdapter = new BeaconRecyclerViewAdapter(beaconItems, getApplicationContext());
@@ -83,8 +93,9 @@ public class ViewBeaconActivity extends AppCompatActivity {
                     beaconContent.setLayoutManager(new LinearLayoutManager(self));
 
                     // Only show the edit fab if the user is the owner
-                    boolean userIsOwner = true; //CHANGE ME -- testing purposes only
-                    if (!userIsOwner) {
+                    ParseUser user = ParseUser.getCurrentUser();
+                    ArrayList userBeacons = (ArrayList) user.get("created");
+                    if (!userBeacons.contains(beacon.getObjectId())) {
                         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.edit_fab);
                         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
                         params.setAnchorId(View.NO_ID);
@@ -111,6 +122,23 @@ public class ViewBeaconActivity extends AppCompatActivity {
 
     // Launch Edit Beacon here
     public void editBeacon(View view) {
+        Intent intent = new Intent(this, CreateBeaconActivity.class);
+        intent.putExtra("beaconId", beacon.getObjectId());
+        intent.putExtra("createBeacon", false);
 
+        startActivityForResult(intent, 0);
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+            query.whereEqualTo("objectId", data.getExtras().get("beaconId"));
+            doQuery(query);
+
+        }
     }
 }
