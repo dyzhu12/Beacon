@@ -42,6 +42,8 @@ public class ViewBeaconActivity extends AppCompatActivity {
     private RecyclerView beaconContent;
     private CollapsingToolbarLayout collapsingToolbar;
 
+    private ParseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +56,9 @@ public class ViewBeaconActivity extends AppCompatActivity {
 
 
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-
         collapsingToolbar.setContentScrimColor(ContextCompat.getColor(getApplicationContext(), colorPrimary));
+
+        user = ParseUser.getCurrentUser();
 
         ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
         query.whereEqualTo("objectId", getIntent().getExtras().get("beaconId"));
@@ -93,9 +96,10 @@ public class ViewBeaconActivity extends AppCompatActivity {
                     beaconContent.setLayoutManager(new LinearLayoutManager(self));
 
                     // Only show the edit fab if the user is the owner
-                    ParseUser user = ParseUser.getCurrentUser();
-                    ArrayList userBeacons = (ArrayList) user.get("created");
-                    if (!userBeacons.contains(beacon.getObjectId())) {
+                    ArrayList<String> userBeacons = (ArrayList) user.get("created");
+                    System.out.println(beacon.getCreator().getObjectId());
+                    System.out.println(user.getObjectId());
+                    if (!beacon.getCreator().getObjectId().equals(user.getObjectId())) {
                         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.edit_fab);
                         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
                         params.setAnchorId(View.NO_ID);

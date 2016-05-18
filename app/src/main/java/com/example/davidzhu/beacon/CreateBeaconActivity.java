@@ -483,14 +483,18 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
             beacon.setWebsite(website);
         }
 
-        beacon.setCreator(ParseUser.getCurrentUser());
-        beacon.saveInBackground();
+
+
 
         if (editMode) {
             Intent intent = new Intent();
             intent.putExtra("beaconId", beacon.getObjectId());
             setResult(RESULT_OK, intent);
+        } else {
+            beacon.setCreator(ParseUser.getCurrentUser());
         }
+
+        beacon.saveInBackground();
         finish();
     }
 }
