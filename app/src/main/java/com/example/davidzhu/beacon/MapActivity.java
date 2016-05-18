@@ -69,6 +69,7 @@ public class MapActivity extends FragmentActivity implements
                 .addApi(LocationServices.API)
                 .build();
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         //creates LocationRequest object
         mLocationRequest = LocationRequest.create()
             .setInterval(10*1000) //10s in millisecs
@@ -77,10 +78,9 @@ public class MapActivity extends FragmentActivity implements
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.setDrawerListener(this);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -260,9 +260,7 @@ public class MapActivity extends FragmentActivity implements
 
     //listener for Create Beacon fab
     public void launchCreateBeacon(View view) {
-//        Intent intent = new Intent(this, CreateBeaconActivity.class);
-//        startActivity(intent);
-        Intent intent = new Intent(this, ViewBeaconActivity.class);
+        Intent intent = new Intent(this, CreateBeaconActivity.class);
         startActivity(intent);
     }
 
@@ -281,7 +279,6 @@ public class MapActivity extends FragmentActivity implements
 
     // listener for Filter toolbar button
     public void showFilters(View view) {
-        System.out.println("in showFilters"); //not working on galaxy s4
         Intent intent = new Intent(this, FilterBeaconActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
@@ -302,8 +299,6 @@ public class MapActivity extends FragmentActivity implements
     @Override
     public void onDrawerOpened(View drawerView) {
         ParseUser user = ParseUser.getCurrentUser();
-        System.out.println(user.get("email"));
-        System.out.println(user.get("username"));
         ((TextView)findViewById(R.id.nav_drawer_email)).setText((String)user.get("email"));
         ((TextView)findViewById(R.id.nav_drawer_name)).setText((String)user.get("username"));
     }
