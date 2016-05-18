@@ -4,6 +4,10 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
+        android:id="@+id/filler_id"
         android:orientation="vertical"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
@@ -60,6 +64,7 @@
         </LinearLayout>
     </LinearLayout>
     <ImageView
+        android:id="@+id/list_beacon_image"
         android:layout_alignParentEnd="true"
         android:layout_width="64dp"
         android:layout_height="64dp"

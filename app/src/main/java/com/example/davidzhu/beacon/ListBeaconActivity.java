@@ -7,25 +7,94 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by David Zhu on 5/16/2016.
  */
 public class ListBeaconActivity extends AppCompatActivity {
 
-    private ArrayList<BeaconTest> beacons = new ArrayList();
+    private ArrayList<Beacon> beaconList;
     private BeaconAdapter adapter;
-
+    private ParseUser user;
+    private String sort;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_beacon);
 
-        adapter = new BeaconAdapter(this, R.layout.list_i_beacon, R.id.list_beacon_name, beacons);
 
-        // Testing with fake data!
-        populateWithFakeData();
+        user = ParseUser.getCurrentUser();
+        sort = user.getString("sortFilter");
+
+        String userId = user.getString("username");
+        if (sort.equals("popularity")) {
+            doPopularityQuery();
+        }
+        if (sort.equals("distance")) {
+            doDistanceQuery();
+        }
+        if (sort.equals("name")) {
+            doNameQuery();
+        }
+
+    }
+
+    private void doDistanceQuery() {
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+        query.orderByDescending("name").whereExists("location");
+        query.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e == null) {
+                    ParseUser user = ParseUser.getCurrentUser();
+                    ArrayList<Beacon> sortedList = new ArrayList<Beacon>();
+                    for (int i = 0; i < objects.size(); i++) {
+                        double distance = objects.get(i).getLocation().distanceInMilesTo(user.getParseGeoPoint("location"));
+
+                        if (sortedList.size() == 0) {
+                            sortedList.add(objects.get(i));
+                        } else {
+                            for (int j = 0; j < sortedList.size(); j++) {
+                                double distance2 = sortedList.get(j).getLocation().distanceInMilesTo(user.getParseGeoPoint("location"));
+                                if (distance < distance2) {
+                                    sortedList.add(j, objects.get(i));
+                                    break;
+                                }
+                                if (j == sortedList.size() - 1) {
+                                    sortedList.add(objects.get(i));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    setAdapter(sortedList);
+                }
+            }
+        });
+    }
+
+    private void doPopularityQuery() {
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+        query.orderByAscending("popularity").whereExists("location");
+        query.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e == null) {
+                    setAdapter(objects);
+                }
+            }
+        });
+    }
+
+    private void setAdapter(List<Beacon> objects) {
+        adapter = new BeaconAdapter(this, R.layout.list_i_beacon, R.id.list_beacon_name, (ArrayList<Beacon>) objects);
 
         ListView beaconList = (ListView) findViewById(R.id.beacon_list);
         beaconList.setAdapter(adapter);
@@ -42,22 +111,42 @@ public class ListBeaconActivity extends AppCompatActivity {
         return(super.onOptionsItemSelected(item));
     }
 
-    public void populateWithFakeData() {
-        beacons.add(new BeaconTest("Free Pizza", 53));
-        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
-        beacons.add(new BeaconTest("Communist Party", 5));
-        beacons.add(new BeaconTest("Free Pizza", 53));
-        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
-        beacons.add(new BeaconTest("Communist Party", 5));
-        beacons.add(new BeaconTest("Free Pizza", 53));
-        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
-        beacons.add(new BeaconTest("Communist Party", 5));
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            String sort = (String) data.getExtras().get("sort");
+
+            if (sort.equals("distance")) {
+                doDistanceQuery();
+            }
+            if (sort.equals("popularity")) {
+                doPopularityQuery();
+            }
+            if (sort.equals("name")) {
+                doNameQuery();
+            }
+        }
+    }
+
+    private void doNameQuery() {
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+        query.orderByDescending("name").whereExists("location");
+        query.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e == null) {
+                    setAdapter(objects);
+                }
+            }
+        });
     }
 
     // Handler for FILTER button in bottom right -- launches Filter Activity
     public void showFiltersForList(View view) {
         Intent intent = new Intent(this, FilterBeaconActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
     }
 }
