@@ -33,6 +33,12 @@ public class ListBeaconActivity extends AppCompatActivity {
         user = ParseUser.getCurrentUser();
         sort = user.getString("sortFilter");
 
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         String userId = user.getString("username");
         if (sort.equals("popularity")) {
             doPopularityQuery();
