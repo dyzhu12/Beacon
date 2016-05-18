@@ -135,5 +135,28 @@
     <string name="settings_web_text">Website</string>
     <string name="settings_address_text">Address</string>
 
+    <!-- Notifications settings -->
+    <string name="vibrate">Vibrate</string>
+    <string name="tags">Tags</string>
+    <string name="add_tag">Add a Tag</string>
+    <string name="notification_distance">Distance</string>
+    <string name="less">Less than</string>
+    <string name="greater">Greater than</string>
+    <string name="one_mile">1 mile</string>
+    <string name="five_mile">5 mile</string>
+    <string name="ten_mile">10 mile</string>
 
+    <string name="time">Time</string>
+    <string name="after">After</string>
+
+    <string-array name="distance_compare_array">
+        <item>Less Than</item>
+        <item>Greater Than</item>
+    </string-array>
+    <string-array name="distance_value_array">
+        <item>1 mile</item>
+        <item>5 miles</item>
+        <item>10 miles</item>
+        <item>20 miles</item>
+    </string-array>
 </resources>

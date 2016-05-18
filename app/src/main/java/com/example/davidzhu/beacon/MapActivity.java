@@ -236,7 +236,7 @@ public class MapActivity extends FragmentActivity implements
         } else if (id == R.id.my_created_beacons) {
             intent = new Intent(this, MyCreatedBeaconsActivity.class);
         } else if (id == R.id.notification_settings) {
-
+            intent = new Intent(this, NotificationsActivity.class);
         } else if (id == R.id.my_account) {
             intent = new Intent(this, MyAccountActivity.class);
         } else if (id == R.id.about) {
