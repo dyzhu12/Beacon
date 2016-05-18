@@ -135,5 +135,7 @@
     <string name="settings_web_text">Website</string>
     <string name="settings_address_text">Address</string>
 
+    <!-- Edit Beacon -->
+    <string name="edit_beacon">Edit Beacon</string>
 
 </resources>
