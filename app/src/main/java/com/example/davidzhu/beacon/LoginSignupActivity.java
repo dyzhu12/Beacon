@@ -38,9 +38,9 @@ public class LoginSignupActivity extends AppCompatActivity {
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
 
-//        if(ParseUser.getCurrentUser() != null){
-//            ParseUser.logOut();
-//        }
+        if(ParseUser.getCurrentUser() != null){
+            ParseUser.logOut();
+        }
 //        ParseUser.enableAutomaticUser();
 
 

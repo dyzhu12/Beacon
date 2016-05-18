@@ -63,25 +63,29 @@ public class MySavedBeaconsActivity extends AppCompatActivity {
     private void queryMyCreatedBeacons() {
         ParseUser user = ParseUser.getCurrentUser();
         String userId = user.getObjectId();
+        List<String> saved  = user.getList("savedBeacons");
+        if(saved != null){
+            ParseQuery<Beacon> myCreatedBeaconsQuery = ParseQuery.getQuery("Beacon");
+            myCreatedBeaconsQuery.whereContainedIn("objectId", saved);
+//          myCreatedBeaconsQuery.whereEqualTo("user", user);
 
-        ParseQuery<Beacon> myCreatedBeaconsQuery = ParseQuery.getQuery("Beacon");
-        myCreatedBeaconsQuery.whereEqualTo("user", user);
-
-        myCreatedBeaconsQuery.findInBackground(new FindCallback<Beacon>() {
-            @Override
-            public void done(List<Beacon> results, ParseException e) {
-                if (e == null) {
-                    //for each beacon in the objects List
-                    for (Beacon beacon : results) {
-                        String beaconId = beacon.getObjectId();
-                        String beaconDisplayName = beacon.getString("name");
-                        beaconIds.add(beaconId);
-                        beaconDisplayNames.add(beaconDisplayName);
-                        adapter.notifyDataSetChanged();
+            myCreatedBeaconsQuery.findInBackground(new FindCallback<Beacon>() {
+                @Override
+                public void done(List<Beacon> results, ParseException e) {
+                    if (e == null) {
+                        //for each beacon in the objects List
+                        for (Beacon beacon : results) {
+                            String beaconId = beacon.getObjectId();
+                            String beaconDisplayName = beacon.getString("name");
+                            beaconIds.add(beaconId);
+                            beaconDisplayNames.add(beaconDisplayName);
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                 }
-            }
-        });
+            });
+
+        }
 
     }
 }
