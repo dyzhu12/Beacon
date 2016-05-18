@@ -405,6 +405,12 @@ public class MapActivity extends FragmentActivity implements
         int popularity = user.getInt("ratingFilter");
         String sort = user.getString("sortFilter");
 
+        List<String> savedTags = user.getList("savedTags");
+
+        if(savedTags != null){
+            mapQuery.whereContainedIn("tags",savedTags);
+        }
+
         if(distance != -1){
             mapQuery.whereWithinMiles("location", myPoint, distance);
         }
