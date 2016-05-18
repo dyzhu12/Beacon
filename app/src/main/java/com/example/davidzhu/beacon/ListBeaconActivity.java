@@ -82,7 +82,7 @@ public class ListBeaconActivity extends AppCompatActivity {
 
     private void doPopularityQuery() {
         ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
-        query.orderByAscending("popularity").whereExists("location");
+        query.orderByDescending("popularity").whereExists("location");
         query.findInBackground(new FindCallback<Beacon>() {
             @Override
             public void done(List<Beacon> objects, ParseException e) {
@@ -132,7 +132,7 @@ public class ListBeaconActivity extends AppCompatActivity {
 
     private void doNameQuery() {
         ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
-        query.orderByDescending("name").whereExists("location");
+        query.orderByAscending("name").whereExists("location");
         query.findInBackground(new FindCallback<Beacon>() {
             @Override
             public void done(List<Beacon> objects, ParseException e) {
