@@ -1,5 +1,6 @@
 package com.example.davidzhu.beacon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -102,46 +103,49 @@ public class FilterBeaconActivity extends AppCompatActivity implements SeekBar.O
         rRating.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.rating_any: user.put("ratingFilter",-1);
-                        break;
-                    case R.id.rating_25: user.put("ratingFilter", 25);
-                        break;
-                    case R.id.rating_100: user.put("ratingFilter", 100);
-                        break;
-                    case R.id.rating_500: user.put("ratingFilter", 500);
-                        break;
-                }
+            switch (checkedId){
+                case R.id.rating_any: user.put("ratingFilter",-1);
+                    break;
+                case R.id.rating_25: user.put("ratingFilter", 25);
+                    break;
+                case R.id.rating_100: user.put("ratingFilter", 100);
+                    break;
+                case R.id.rating_500: user.put("ratingFilter", 500);
+                    break;
+            }
             }
         });
 
         rSort.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.sort_distance: user.put("sortFilter","distance");
-                        break;
-                    case R.id.sort_popularity: user.put("sortFilter", "popularity");
-                        break;
-                    case R.id.sort_name: user.put("sortFilter", "name");
-                        break;
-                }
+            switch (checkedId){
+                case R.id.sort_distance: user.put("sortFilter","distance");
+                    break;
+                case R.id.sort_popularity: user.put("sortFilter", "popularity");
+                    break;
+                case R.id.sort_name: user.put("sortFilter", "name");
+                    break;
+            }
             }
         });
 
         applyText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.saveInBackground();
-                finish();
+            user.saveInBackground();
+            Intent intent = new Intent();
+            intent.putExtra("sort", user.getString("sortFilter"));
+            setResult(RESULT_OK, intent);
+            finish();
             }
         });
 
         cancelText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.revert();
-                finish();
+            user.revert();
+            finish();
             }
         });
 

@@ -34,6 +34,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseGeoPoint;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.parse.ParseUser;
 import com.google.android.gms.maps.model.Marker;
@@ -60,11 +67,12 @@ public class MapActivity extends FragmentActivity implements
     public static final String TAG = MapActivity.class.getSimpleName();
 
     private final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 0;
+    private static final int CREATE_BEACON_REQUEST = 1;
 
     private GoogleMap mMap;
-
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+    private final Map<String, Marker> mapMarkers = new HashMap<String, Marker>();
 
     private Location mCurrentLocation;
     private Location lastLocation;
@@ -133,9 +141,7 @@ public class MapActivity extends FragmentActivity implements
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-
+        
         user = ParseUser.getCurrentUser();
 
         EditText searchBar = (EditText) findViewById(R.id.main_search);
@@ -182,6 +188,10 @@ public class MapActivity extends FragmentActivity implements
         //setMyLocationButtons changes view back to user's current location
         mUiSettings.setMyLocationButtonEnabled(false);
         enableMyLocation();
+        mMap.setOnMarkerClickListener(this);
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(38.9897, -76.9378)));
+
     }
 
     /**
@@ -355,7 +365,6 @@ public class MapActivity extends FragmentActivity implements
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
     }
 
-
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
 
@@ -520,8 +529,6 @@ public class MapActivity extends FragmentActivity implements
             }
         });
     }
-
-
 
     private ParseGeoPoint geoPointFromLocation(Location loc) {
         return new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
