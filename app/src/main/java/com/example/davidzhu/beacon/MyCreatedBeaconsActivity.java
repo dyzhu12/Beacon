@@ -1,5 +1,6 @@
 package com.example.davidzhu.beacon;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,13 +48,16 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
                     @Override
                     public void done(List<Beacon> results, ParseException e) {
                         if (e == null) {
-                            for (Beacon beacon : results) { //mostly fixed, but strange behavior when you add beacons (names) in the order: 
-                                beacon.deleteInBackground();
+                            for (Beacon beacon : results) { //mostly fixed, but strange behavior when you add beacons (names) in the order:
+                                Intent intent = new Intent(MyCreatedBeaconsActivity.this, ViewBeaconActivity.class);
+                                intent.putExtra("beaconId", beacon.getObjectId());
+                                startActivity(intent);
+                                /*beacon.deleteInBackground();
                                 beaconIds.clear();
                                 beaconDisplayNames.clear();
                                 adapter.clear();
                                 queryMyCreatedBeacons();
-                                adapter.notifyDataSetChanged();
+                                adapter.notifyDataSetChanged();*/
 
                                 //listView.invalidate();
                                 //queryMyCreatedBeacons();

@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseGeoPoint;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -410,18 +411,27 @@ public class MapActivity extends FragmentActivity implements
         mapQuery.whereExists("location");
 
         // Set up additional query filters
-        int distance = user.getInt("distanceFilter");
-        int popularity = user.getInt("ratingFilter");
-        String sort = user.getString("sortFilter");
-
         try {
             user.fetch();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        List<String> savedTags = user.getList("savedTags");
+        int distance = user.getInt("distanceFilter");
+        int popularity = user.getInt("ratingFilter");
+        String sort = user.getString("sortFilter");
+        int t = user.getInt("timeFilter");
+        Date curTime=new Date();
+        mapQuery.whereGreaterThanOrEqualTo("startDate", curTime);
+        if(t != -1){
+            Date maxTime=new Date();
+            maxTime.setTime(System.currentTimeMillis()+(t*(60*60*1000)));
+            mapQuery.whereLessThanOrEqualTo("startDate", maxTime);
+        }
 
-        if(savedTags != null){
+
+
+        List<String> savedTags = user.getList("savedTags");
+        if(savedTags != null && savedTags.size()>0){
             mapQuery.whereContainedIn("tags",savedTags);
         }
 
@@ -472,6 +482,7 @@ public class MapActivity extends FragmentActivity implements
                     ParseUser c = beacon.getCreator();
                     String a = c.getObjectId();
                     ArrayList<String> tags = beacon.getTags();
+                    Date tt = beacon.getStartDate();
 
 
 
