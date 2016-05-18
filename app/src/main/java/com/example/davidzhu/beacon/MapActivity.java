@@ -22,6 +22,7 @@ import android.view.View;
 import android.location.Location;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.fitness.data.Application;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
@@ -30,7 +31,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseQuery;
+import com.parse.FindCallback;
+import com.parse.ParseUser;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MapActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -48,15 +62,35 @@ public class MapActivity extends FragmentActivity implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
+    private Location mCurrentLocation;
+    private Location lastLocation;
+    private static final int MAX_POST_SEARCH_RESULTS = 20;
+
+    private int mostRecentMapUpdate;
+
+
+    //MUST BE CHANGED TO USER SETTINGS
+    private float radius = 2;
+
+    // Debugging switch
+    public static final boolean APPDEBUG = false;
+
+    // Debugging tag for the application
+    public static final String APPTAG = "Beacon";
+    private SupportMapFragment mapFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
 
         //creates GoogleApiClient object
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -64,6 +98,14 @@ public class MapActivity extends FragmentActivity implements
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            public void onCameraChange(CameraPosition position) {
+                // When the camera changes, update the query
+                doMapQuery();
+            }
+        });
+
 
         //creates LocationRequest object
         mLocationRequest = LocationRequest.create()
@@ -259,6 +301,7 @@ public class MapActivity extends FragmentActivity implements
     }
 
     //listener for User Location fab
+
     public void centerUserLocation(View view) {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -270,6 +313,7 @@ public class MapActivity extends FragmentActivity implements
             }
         }
     }
+
 
     // listener for Filter toolbar button
     public void showFilters(View view) {
@@ -285,4 +329,87 @@ public class MapActivity extends FragmentActivity implements
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
     }
+
+
+    private void doMapQuery() {
+        final int myUpdateNumber = ++mostRecentMapUpdate;
+        Location myLoc = null;
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            myLoc = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+//        Location myLoc = (mCurrentLocation == null) ? lastLocation : mCurrentLocation;
+        // If location info isn't available, clean up any existing markers
+        if (myLoc == null) {
+            mMap.clear();
+            return;
+        }
+        final ParseGeoPoint myPoint = geoPointFromLocation(myLoc);
+        // Create the map Parse query
+
+
+        //ParseQuery<Beacon> mapQuery = Beacon.getQuery();
+        ParseQuery<Beacon> mapQuery = ParseQuery.getQuery("Beacon");
+
+        // Set up additional query filters
+        //mapQuery.whereWithinMiles("location", myPoint, 2);
+        //mapQuery.whereEqualTo("user","0g6uYAQYon");
+        //mapQuery.include("user");
+        mapQuery.whereExists("location");
+        //mapQuery.whereExists("name");
+        //mapQuery.orderByDescending("createdAt");
+        //mapQuery.setLimit(20);
+        // Kick off the query in the background
+        mapQuery.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e != null) {
+                    if (StarterApplication.APPDEBUG) {
+                        Log.d(StarterApplication.APPTAG, "An error occurred while querying for map posts.", e);
+                    }
+                    return;
+                }
+        /*
+         * Make sure we're processing results from
+         * the most recent update, in case there
+         * may be more than one in progress.
+         */
+                if (myUpdateNumber != mostRecentMapUpdate) {
+                    return;
+                }
+
+                mMap.clear();
+
+                // Loop through the results of the search
+                for (Beacon beacon : objects) {
+
+                    String i = beacon.getObjectId();
+                    ParseUser c = beacon.getCreator();
+                    String a = c.getObjectId();
+
+
+                        MarkerOptions markerOpts =
+                                new MarkerOptions().position(new LatLng(beacon.getLocation().getLatitude(), beacon
+                                        .getLocation().getLongitude()));
+                        // Display a green marker with the post information
+                        markerOpts =
+                                markerOpts.title(beacon.getDisplayName()).snippet(beacon.getCreator().getObjectId())
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+                        // Add a new marker
+                        mapFragment.getMap().addMarker(markerOpts);
+
+
+                }
+
+            }
+        });
+    }
+
+
+
+    private ParseGeoPoint geoPointFromLocation(Location loc) {
+        return new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
+    }
+
+
 }
