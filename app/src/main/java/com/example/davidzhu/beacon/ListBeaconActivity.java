@@ -40,20 +40,40 @@ public class ListBeaconActivity extends AppCompatActivity {
         }
 
         String userId = user.getString("username");
+
+        int distance = user.getInt("distanceFilter");
+        int popularity = user.getInt("ratingFilter");
+        String sort = user.getString("sortFilter");
+
+        List<String> savedTags = user.getList("savedTags");
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+
+        if(savedTags != null){
+            query.whereContainedIn("tags",savedTags);
+        }
+
+        if(distance != -1){
+            query.whereWithinMiles("location", user.getParseGeoPoint("location"), distance);
+        }
+
+        if(popularity != -1){
+            query.whereGreaterThanOrEqualTo("popularity",popularity);
+        }
+
         if (sort.equals("popularity")) {
-            doPopularityQuery();
+            doPopularityQuery(query);
         }
         if (sort.equals("distance")) {
-            doDistanceQuery();
+            doDistanceQuery(query);
         }
         if (sort.equals("name")) {
-            doNameQuery();
+            doNameQuery(query);
         }
 
     }
 
-    private void doDistanceQuery() {
-        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+    private void doDistanceQuery(ParseQuery query) {
+
         query.orderByDescending("name").whereExists("location");
         query.findInBackground(new FindCallback<Beacon>() {
             @Override
@@ -86,8 +106,7 @@ public class ListBeaconActivity extends AppCompatActivity {
         });
     }
 
-    private void doPopularityQuery() {
-        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+    private void doPopularityQuery(ParseQuery query) {
         query.orderByDescending("popularity").whereExists("location");
         query.findInBackground(new FindCallback<Beacon>() {
             @Override
@@ -122,22 +141,44 @@ public class ListBeaconActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
+            try {
+                user.fetch();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             String sort = (String) data.getExtras().get("sort");
+            int distance = user.getInt("distanceFilter");
+            int popularity = user.getInt("ratingFilter");
+
+            List<String> savedTags = user.getList("savedTags");
+            ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+
+            if(savedTags != null){
+                query.whereContainedIn("tags",savedTags);
+            }
+
+            if(distance != -1){
+                query.whereWithinMiles("location", user.getParseGeoPoint("location"), distance);
+            }
+
+            if(popularity != -1){
+                query.whereGreaterThanOrEqualTo("popularity",popularity);
+            }
+
 
             if (sort.equals("distance")) {
-                doDistanceQuery();
+                doDistanceQuery(query);
             }
             if (sort.equals("popularity")) {
-                doPopularityQuery();
+                doPopularityQuery(query);
             }
             if (sort.equals("name")) {
-                doNameQuery();
+                doNameQuery(query);
             }
         }
     }
 
-    private void doNameQuery() {
-        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+    private void doNameQuery(ParseQuery query) {
         query.orderByAscending("name").whereExists("location");
         query.findInBackground(new FindCallback<Beacon>() {
             @Override
