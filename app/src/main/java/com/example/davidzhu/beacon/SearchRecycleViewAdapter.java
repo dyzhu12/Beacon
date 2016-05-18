@@ -1,5 +1,8 @@
 package com.example.davidzhu.beacon;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +14,7 @@ import java.util.ArrayList;
 
 public class SearchRecycleViewAdapter extends RecyclerView.Adapter<SearchRecycleViewAdapter.SearchPlaceViewHolder> {
 
-
+    Activity mSearchActivity;
     // default lists
     int mSize;
     ArrayList<String> mDefaultTags;
@@ -25,17 +28,18 @@ public class SearchRecycleViewAdapter extends RecyclerView.Adapter<SearchRecycle
 
         TextView itemName;
         ImageView image;
-
+        Activity mSearchActivity;
         ArrayList<String> mSavedTags;
         ExpandableListAdapter mELA;
 
-        SearchPlaceViewHolder(View itemView, ArrayList<String> savedTags, ExpandableListAdapter adapter) {
+        SearchPlaceViewHolder(View itemView, ArrayList<String> savedTags, ExpandableListAdapter adapter, Activity searchActivity) {
             super(itemView);
             itemView.setOnClickListener(this);
             image = (ImageView)itemView.findViewById(R.id.search_item_img);
             itemName = (TextView)itemView.findViewById(R.id.search_item_text);
             mSavedTags = savedTags;
             mELA = adapter;
+            mSearchActivity = searchActivity;
         }
 
         @Override
@@ -64,6 +68,8 @@ public class SearchRecycleViewAdapter extends RecyclerView.Adapter<SearchRecycle
                     }
                     break;
                 case 3:
+                    Intent intent = new Intent(mSearchActivity, SearchMoreTags.class);
+                    mSearchActivity.startActivity(intent);
                     break;
             }
 
@@ -71,11 +77,12 @@ public class SearchRecycleViewAdapter extends RecyclerView.Adapter<SearchRecycle
 
     }
 
-    SearchRecycleViewAdapter(ArrayList<String> defaultItems, ArrayList<String> userSavedItems, ExpandableListAdapter adapter){
+    SearchRecycleViewAdapter(ArrayList<String> defaultItems, ArrayList<String> userSavedItems, ExpandableListAdapter adapter, Activity activity){
         mDefaultTags = defaultItems;
         mSize = mDefaultTags.size();
         mUserSavedTags = userSavedItems;
         mELA = adapter;
+        mSearchActivity = activity;
     }
 
     @Override
@@ -86,7 +93,7 @@ public class SearchRecycleViewAdapter extends RecyclerView.Adapter<SearchRecycle
     @Override
     public SearchPlaceViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_item, viewGroup, false);
-        return new SearchPlaceViewHolder(v,mUserSavedTags,mELA);
+        return new SearchPlaceViewHolder(v,mUserSavedTags,mELA,mSearchActivity);
     }
 
     @Override

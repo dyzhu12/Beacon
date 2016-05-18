@@ -17,15 +17,7 @@ public final class SearchIconLoader {
     private static ArrayList<String> mAllTags;
 
     public static void SearchIconLoader() {
-        mAllTags = new ArrayList<String>();
-        mAllTags.add("Food");
-        mAllTags.add("Free");
-        mAllTags.add("Fun");
-        mAllTags.add("Arts");
-        mAllTags.add("Sports");
-        mAllTags.add("Serve");
-        mAllTags.add("Fabulous");
-        mAllTags.add("Fire");
+
     }
 
     public static Integer getIcon(String itemName) {
@@ -53,6 +45,15 @@ public final class SearchIconLoader {
     }
 
     public static ArrayList<String> getAllTags() {
+        mAllTags = new ArrayList<String>();
+        mAllTags.add("Food");
+        mAllTags.add("Free");
+        mAllTags.add("Fun");
+        mAllTags.add("Arts");
+        mAllTags.add("Sports");
+        mAllTags.add("Serve");
+        mAllTags.add("Fabulous");
+        mAllTags.add("Fire");
         return mAllTags;
     }
 

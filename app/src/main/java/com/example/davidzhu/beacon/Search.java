@@ -20,14 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Search extends AppCompatActivity {
-    private static final int VERTICAL_ITEM_SPACE = 12;
-
     private RecyclerView.LayoutManager mLayoutManager;
 
     ArrayList<String> mUserTagsNames = new ArrayList<String>();
     ArrayList<String> mDefaultTagsNames = new ArrayList<String>();
 
     ExpandableListView expListView;
+    ExpandableListAdapter expListAdapter;
 
     ParseUser mUser;
     SearchIconLoader il = new SearchIconLoader();
@@ -38,19 +37,8 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.search_app_bar).findViewById(R.id.search_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-        // when creating an activity, get the search field in focus and retract the keyboard
-        EditText searchField = (EditText) findViewById(R.id.search_field);
-        searchField.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
 
         mUser = ParseUser.getCurrentUser();
-        mUserTagsNames.clear();
         try {
             mUser.fetch();
         } catch (ParseException e) {
@@ -63,20 +51,28 @@ public class Search extends AppCompatActivity {
             }
         }
 
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.search_app_bar).findViewById(R.id.search_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        // when creating an activity, get the search field in focus and retract the keyboard
+        EditText searchField = (EditText) findViewById(R.id.search_field);
+        searchField.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
+
         createGroupList();
 
         expListView = (ExpandableListView) findViewById(R.id.search_exp_tags_list);
-        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, mUserTagsNames);
+        expListAdapter = new ExpandableListAdapter(this, mUserTagsNames);
         expListView.setAdapter(expListAdapter);
 
         expListView.setOnChildClickListener(new OnChildClickListener() {
 
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                final String selected = (String) expListAdapter.getChild(
-                        groupPosition, childPosition);
-                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
-                        .show();
 
                 return true;
             }
@@ -87,8 +83,7 @@ public class Search extends AppCompatActivity {
         rv.setHasFixedSize(true);
         mLayoutManager = new CustomLinearLayoutManager(this);
         rv.setLayoutManager(mLayoutManager);
-        rv.addItemDecoration(new DividerDecoration(getApplicationContext()));
-        SearchRecycleViewAdapter srva = new SearchRecycleViewAdapter(mDefaultTagsNames, mUserTagsNames,expListAdapter);
+        SearchRecycleViewAdapter srva = new SearchRecycleViewAdapter(mDefaultTagsNames,mUserTagsNames,expListAdapter,this);
         rv.setAdapter(srva);
     }
 
@@ -99,6 +94,27 @@ public class Search extends AppCompatActivity {
         mUser.remove("savedTags");
         mUser.addAllUnique("savedTags", mUserTagsNames);
         mUser.saveInBackground();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mUser = ParseUser.getCurrentUser();
+        try {
+            mUser.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<String> savedTags = mUser.getList("savedTags");
+        if (savedTags != null) {
+            for (String temp : savedTags) {
+                if (!mUserTagsNames.contains(temp)) {mUserTagsNames.add(temp);}
+            }
+        }
+
+        expListAdapter.notifyDataSetChanged();
+
     }
 
 

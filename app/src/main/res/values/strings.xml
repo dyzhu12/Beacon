@@ -148,6 +148,13 @@
     <string name="food">Food</string>
     <string name="free">Free</string>
     <string name="fun">Fun</string>
+    <string name="arts">Arts</string>
+    <string name="sports">Sports</string>
+    <string name="serve">Serve</string>
+    <string name="fabulous">Fabulous</string>
+    <string name="fire">Fire</string>
+    <string name="is_added"> is added.</string>
     <string name="more_cat">MORE CATEGORIES</string>
+    <string name="title_activity_search_more_tags">SearchMoreTags</string>
 
 </resources>
