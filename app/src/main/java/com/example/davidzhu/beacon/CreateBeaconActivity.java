@@ -1,10 +1,12 @@
 package com.example.davidzhu.beacon;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
@@ -12,6 +14,8 @@ import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -63,6 +67,8 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
 
     private long startTimeNum;
     private long endTimeNum;
+
+    private static final int MY_PERMISSIONS_READ_STORAGE = 0;
 
     private Calendar calendar = Calendar.getInstance();
 
@@ -199,6 +205,38 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
      */
     public void addPhoto(final View v) {
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_READ_STORAGE);
+        } else {
+            showDialog();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_READ_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                   showDialog();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    private void showDialog() {
         final CharSequence[] items = { "Take Photo", "Choose Photo" };
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
@@ -206,11 +244,15 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
+
                 if (items[item].equals("Take Photo")) {
-                    takePhoto(v);
+
+                    takePhoto();
+
                 } else if (items[item].equals("Choose Photo")) {
-                    choosePhoto(v);
+                    choosePhoto();
                 }
+
             }
         });
         dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -219,9 +261,11 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         });
 
         dialogBuilder.show();
+
+
     }
 
-    public void takePhoto(View v) {
+    public void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (intent.resolveActivity(getPackageManager()) != null) {
@@ -229,7 +273,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         }
 
     }
-    public void choosePhoto(View v) {
+    public void choosePhoto() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, GALLERY_REQUEST);
 
