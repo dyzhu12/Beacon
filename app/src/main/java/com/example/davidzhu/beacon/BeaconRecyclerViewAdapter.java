@@ -80,6 +80,9 @@ public class BeaconRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             case "Website":
                 resourceId = R.drawable.ic_public_24dp;
                 break;
+            case "Tags":
+                resourceId = R.drawable.ic_loyalty_24dp;
+                break;
 
         }
 

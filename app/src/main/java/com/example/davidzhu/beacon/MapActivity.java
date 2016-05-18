@@ -46,6 +46,7 @@ import com.parse.ParseQuery;
 import com.parse.FindCallback;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class MapActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         DrawerLayout.DrawerListener,
-        LocationListener{
+        LocationListener, GoogleMap.OnMarkerClickListener {
 
     public static final String TAG = MapActivity.class.getSimpleName();
 
@@ -83,6 +84,8 @@ public class MapActivity extends FragmentActivity implements
     // Debugging tag for the application
     public static final String APPTAG = "Beacon";
     private SupportMapFragment mapFragment;
+
+    private ArrayList<Beacon> visibleBeacons;
 
 
     @Override
@@ -158,9 +161,9 @@ public class MapActivity extends FragmentActivity implements
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        System.out.println("in onMapReady ");
-        mMap = googleMap;
 
+        mMap = googleMap;
+        mMap.setOnMarkerClickListener(this);
         // Disables map toolbar from appearing when marker is clicked
         UiSettings mUiSettings = mMap.getUiSettings();
         mUiSettings.setMapToolbarEnabled(false);
@@ -409,6 +412,7 @@ public class MapActivity extends FragmentActivity implements
 
                 mMap.clear();
 
+                visibleBeacons = new ArrayList<Beacon>(objects);
                 // Loop through the results of the search
                 for (Beacon beacon : objects) {
 
@@ -419,10 +423,10 @@ public class MapActivity extends FragmentActivity implements
 
                         MarkerOptions markerOpts =
                                 new MarkerOptions().position(new LatLng(beacon.getLocation().getLatitude(), beacon
-                                        .getLocation().getLongitude()));
+                                        .getLocation().getLongitude())).snippet(beacon.getObjectId());
                         // Display a green marker with the post information
                         markerOpts =
-                                markerOpts.title(beacon.getDisplayName()).snippet(beacon.getCreator().getObjectId())
+                                markerOpts.title(beacon.getDisplayName())
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
                         // Add a new marker
@@ -442,4 +446,14 @@ public class MapActivity extends FragmentActivity implements
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+
+        String id = marker.getSnippet();
+        Intent intent = new Intent(this, ViewBeaconActivity.class);
+        intent.putExtra("beaconId", id);
+        startActivity(intent);
+        return false;
+    }
 }

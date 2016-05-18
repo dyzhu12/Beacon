@@ -1,5 +1,7 @@
 package com.example.davidzhu.beacon;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -12,7 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.davidzhu.beacon.R.color.colorPrimary;
 
@@ -26,6 +34,8 @@ public class ViewBeaconActivity extends AppCompatActivity {
     private ArrayList<Object> beaconItems;
     private BeaconRecyclerViewAdapter beaconRecyclerAdapter;
 
+    private Beacon beacon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,51 +44,69 @@ public class ViewBeaconActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        RecyclerView beaconContent = (RecyclerView) findViewById(R.id.beacon_content);
+        final RecyclerView beaconContent = (RecyclerView) findViewById(R.id.beacon_content);
 
 
-        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("Beacon Name");
+        final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
         collapsingToolbar.setContentScrimColor(ContextCompat.getColor(getApplicationContext(), colorPrimary));
 
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+        query.whereEqualTo("objectId", getIntent().getExtras().get("beaconId"));
+        final ViewBeaconActivity self = this;
 
-        sampleBeacon.setDate("Sample Date");
-        sampleBeacon.setPhoneNumber("Sample Number");
-        sampleBeacon.setAddress("Sample Address");
-        sampleBeacon.setWebsite("Sample Website");
-        beaconItems = sampleBeacon.getItems();
+        query.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e == null && objects.size() > 0) {
+                    beacon = objects.get(0);
+                    collapsingToolbar.setTitle(beacon.getString("name"));
+                    beaconItems = beacon.getItems();
 
+                    ImageView headerImage = (ImageView) findViewById(R.id.header);
 
-        beaconRecyclerAdapter = new BeaconRecyclerViewAdapter(beaconItems, getApplicationContext());
-        beaconContent.setAdapter(beaconRecyclerAdapter);
-        beaconContent.setLayoutManager(new LinearLayoutManager(this));
+                    if (beacon.getImage()!= null) {
+                        try {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(
+                                    beacon.getImage().getData(),
+                                    0,
+                                    beacon.getImage().getData().length);
+                            headerImage.setImageBitmap(bitmap);
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
 
-        // Only show the edit fab if the user is the owner
-        boolean userIsOwner = true; //CHANGE ME -- testing purposes only
-        if (!userIsOwner) {
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.edit_fab);
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-            params.setAnchorId(View.NO_ID);
-            params.setBehavior(null);
+                    }
 
-            fab.setLayoutParams(params);
-            fab.setVisibility(View.GONE);
-        }
+                    beaconRecyclerAdapter = new BeaconRecyclerViewAdapter(beaconItems, getApplicationContext());
+                    beaconContent.setAdapter(beaconRecyclerAdapter);
+                    beaconContent.setLayoutManager(new LinearLayoutManager(self));
 
-        boolean userHasSaved = false;
-        if (userHasSaved) {
-            ImageView saveButton = (ImageView) findViewById(R.id.save_button);
-            saveButton.setOnClickListener(null);
-        }
+                    // Only show the edit fab if the user is the owner
+                    boolean userIsOwner = true; //CHANGE ME -- testing purposes only
+                    if (!userIsOwner) {
+                        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.edit_fab);
+                        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+                        params.setAnchorId(View.NO_ID);
+                        params.setBehavior(null);
 
+                        fab.setLayoutParams(params);
+                        fab.setVisibility(View.GONE);
+                    }
+
+                    boolean userHasSaved = false;
+                    if (userHasSaved) {
+                        ImageView saveButton = (ImageView) findViewById(R.id.save_button);
+                        saveButton.setOnClickListener(null);
+                    }
+
+                }
+            }
+        });
     }
 
-    public void incrementRating(View view) {
-        beaconItems.set(0, (int) beaconItems.get(0) + 1);
-        ImageView saveButton = (ImageView) findViewById(R.id.save_button);
-        saveButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_star_white_24dp));
-        saveButton.setOnClickListener(null);
-        beaconRecyclerAdapter.notifyDataSetChanged();
+    // Waiting for My Saved Beacons to go through
+    public void toggleRating(View view) {
     }
 
     // Launch Edit Beacon here
