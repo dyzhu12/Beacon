@@ -275,14 +275,15 @@
                         android:textColor="@color/filter_text_color"
                         android:background="@drawable/checkbox_background"/>
                     <RadioButton
-                        android:id="@+id/sort_match"
+                        android:id="@+id/sort_name"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@string/highest_match"
+                        android:text="@string/sort_by_name"
                         android:button="@null"
                         android:padding="16dp"
                         android:textColor="@color/filter_text_color"
-                        android:background="@drawable/checkbox_background"/>
+                        android:background="@drawable/checkbox_background"
+                        android:checked="false" />
 
                 </RadioGroup>
 
