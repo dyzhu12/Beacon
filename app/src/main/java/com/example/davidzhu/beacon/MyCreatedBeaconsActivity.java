@@ -3,22 +3,22 @@ package com.example.davidzhu.beacon;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyCreatedBeaconsActivity extends AppCompatActivity {
-    private TextView itemTextView;
     private ArrayAdapter<String> adapter;
 
-    //fake data for testing purposes
-    private ArrayList<String> testArray;
+    final ArrayList<String> beaconDisplayNames = new ArrayList<String>();
+    final ArrayList<String> beaconIds = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,37 +28,88 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        //fake data
-        populateFakeData();
+        //getBeaconDisplayNames();
+        adapter = new ArrayAdapter<String>(this, R.layout.beacon_list_item, beaconDisplayNames);
+        System.out.println("LINE 34");
 
-        ListView lv = (ListView) findViewById(R.id.list_view_my_created_beacons);
+        final ListView listView = (ListView) findViewById(R.id.list_view_my_created_beacons);
+        listView.setAdapter(adapter);
 
-        //TODO replace testArray with database
-        adapter = new ArrayAdapter(this, R.layout.beacon_list_item, R.id.list_item_textview,testArray.toArray());
-        lv.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                String deleted_beacon_id = beaconIds.get(position);
+
+                ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+                query.whereEqualTo("objectId", deleted_beacon_id);
+                query.findInBackground(new FindCallback<Beacon>() {
+                    @Override
+                    public void done(List<Beacon> results, ParseException e) {
+                        if (e == null) {
+                            for (Beacon beacon : results) { //mostly fixed, but strange behavior when you add beacons (names) in the order: 
+                                beacon.deleteInBackground();
+                                beaconIds.clear();
+                                beaconDisplayNames.clear();
+                                adapter.clear();
+                                queryMyCreatedBeacons();
+                                adapter.notifyDataSetChanged();
+
+                                //listView.invalidate();
+                                //queryMyCreatedBeacons();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        queryMyCreatedBeacons();
     }
 
-    //TODO need to get working with database
-    public void deleteItem(View view){
-        System.out.println("in OnClickDeleteItem, WHOOO!");
-        adapter.notifyDataSetChanged();
-    }
+//    //myCreatedDataName is in the format beaconid.beacondisplayname
+//    private void getBeaconIds(){
+//        beaconIds.clear();
+//        for(String myCreatedBeacon : mCreatedBeaconsArray){
+//            String[] array = myCreatedBeacon.split("."); //split myCreatedBeacons
+//            beaconIds.add(array[0]);
+//            //beaconDisplayNames.add(array[1]);
+//        }
+//    }
+//
+//    //myCreatedDataBeacon is in the format beaconid.beacondisplayname
+//    private void getBeaconDisplayNames(){
+//        beaconDisplayNames.clear();
+//        for(String myCreatedBeacon : mCreatedBeaconsArray){
+//            String[] array = myCreatedBeacon.split("."); //split myCreatedBeacons
+//            beaconDisplayNames.add(array[1]);
+//        }
+//    }
 
-    public void populateFakeData(){
-        testArray = new ArrayList();
-        testArray.add("1. Puppies on the Mall");
-        testArray.add("2. Coding Party");
-        testArray.add("3. Ultimate Frisbee");
-        testArray.add("4. Wow It's My 21st Birthday");
-        testArray.add("5. Turtle Racing");
-        testArray.add("6. Squirrel Watching");
-        testArray.add("7. Free Hugs");
-        testArray.add("8. Free Pizza");
-        testArray.add("9. No Pizza for you");
-        testArray.add("10. Google Tech Talk!!");
-        testArray.add("11. Ride a camel");
-        testArray.add("12. ugh");
-        testArray.add("13. test scroll");
-        testArray.add("14. are we there yet?");
+    private void queryMyCreatedBeacons() {
+        ParseUser user = ParseUser.getCurrentUser();
+        String userId = user.getObjectId();
+
+        ParseQuery<Beacon> myCreatedBeaconsQuery = ParseQuery.getQuery("Beacon");
+        myCreatedBeaconsQuery.whereEqualTo("user", user);
+
+        myCreatedBeaconsQuery.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> results, ParseException e) {
+                if (e == null) {
+                    //for each beacon in the objects List
+                    for (Beacon beacon : results) {
+                        String beaconId = beacon.getObjectId();
+                        String beaconDisplayName = beacon.getString("name");
+                        beaconIds.add(beaconId);
+                        beaconDisplayNames.add(beaconDisplayName);
+                        adapter.notifyDataSetChanged();
+                    }
+                 }
+            }
+        });
+
     }
 }
+
+
