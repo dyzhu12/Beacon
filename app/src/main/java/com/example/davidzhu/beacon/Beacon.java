@@ -6,6 +6,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
@@ -148,6 +149,10 @@ public class Beacon extends ParseObject {
         increment("timesSaved",n);
     }
 
+
+    public static ParseQuery<Beacon> getQuery() {
+        return ParseQuery.getQuery(Beacon.class);
+    }
 
 
 
