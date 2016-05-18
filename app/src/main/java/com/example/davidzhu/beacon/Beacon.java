@@ -164,7 +164,7 @@ public class Beacon extends ParseObject {
         items.add(getInt("timesSaved"));
 
 
-        final SimpleDateFormat timeFormat = new SimpleDateFormat("M/F hh:mm a");
+        final SimpleDateFormat timeFormat = new SimpleDateFormat("M/d hh:mm a");
         String startDate = timeFormat.format(getDate("startDate"));
         String endDate = timeFormat.format(getDate("endDate"));
 

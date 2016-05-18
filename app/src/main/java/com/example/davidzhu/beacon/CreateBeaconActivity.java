@@ -455,12 +455,8 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         }
 
         if (beaconDate != null) {
-            beaconDate.setTime(startTimeNum);
-            beacon.setStartDate(beaconDate);
-
-            beaconDate.setTime(endTimeNum);
-            beacon.setEndDate(beaconDate);
-
+            beacon.setStartDate(new Date(startTimeNum));
+            beacon.setEndDate(new Date(endTimeNum));
         }
 
         String[] tags = tagText.getText().toString().split("\\s+");
