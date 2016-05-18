@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Toast;
+
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -48,6 +50,12 @@ public class Search extends AppCompatActivity {
         imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
 
         mUser = ParseUser.getCurrentUser();
+        mUserTagsNames.clear();
+        try {
+            mUser.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         List<String> savedTags = mUser.getList("savedTags");
         if (savedTags != null) {
             for (String temp : savedTags) {

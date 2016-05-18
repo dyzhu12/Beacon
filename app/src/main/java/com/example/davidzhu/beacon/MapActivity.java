@@ -405,6 +405,11 @@ public class MapActivity extends FragmentActivity implements
         int popularity = user.getInt("ratingFilter");
         String sort = user.getString("sortFilter");
 
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         List<String> savedTags = user.getList("savedTags");
 
         if(savedTags != null){
