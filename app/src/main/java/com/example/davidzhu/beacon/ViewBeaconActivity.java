@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.parse.FindCallback;
@@ -130,6 +131,25 @@ public class ViewBeaconActivity extends AppCompatActivity {
 
     // Waiting for My Saved Beacons to go through
     public void toggleRating(View view) {
+        beacon.saveUnsave(ParseUser.getCurrentUser());
+        beaconItems.set(0, beacon.getInt("popularity"));
+        beaconRecyclerAdapter.notifyDataSetChanged();
+
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        ImageView saveButton = (ImageView) findViewById(R.id.save_button);
+
+        List<Beacon> savedBeacons = user.getList("savedBeacons");
+        if (savedBeacons.contains(beacon.getObjectId())) {
+            saveButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_star_white_24dp));
+        } else {
+            saveButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_star_outline_24dp));
+        }
+
     }
 
     // Launch Edit Beacon here

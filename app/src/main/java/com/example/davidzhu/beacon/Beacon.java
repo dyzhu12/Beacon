@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.util.Pair;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -14,7 +15,9 @@ import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Owner on 5/16/2016.
@@ -143,14 +146,39 @@ public class Beacon extends ParseObject {
         put("popularity", 0);
     }
 
-    /***
-     * Increment the beacon's popularity count up or down. n should be 1 or -1.
-     *
-     * @param n is 1 or -1
-     */
-    public void incrementPopularity(int n){
-        increment("popularity",n);
+
+
+    public void saveUnsave(ParseUser user){
+        String myID = getObjectId();
+        try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<String> prevSaved = user.getList("savedBeacons");
+        if (prevSaved != null && prevSaved.contains(myID)){
+            increment("popularity", -1);
+            user.removeAll("savedBeacons", Arrays.asList(myID));
+        }else{
+            increment("popularity", 1);
+            user.add("savedBeacons", myID);
+        }
+        user.saveInBackground();
+        saveInBackground();
+
+       /* try {
+            user.fetch();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        increment("popularity", 1);
+        saveInBackground();
+        user.add("savedBeacons", myID);
+        user.saveInBackground();*/
     }
+    /*public void incrementPopularity(int n){
+        increment("popularity",n);
+    }*/
 
 
     public static ParseQuery<Beacon> getQuery() {
