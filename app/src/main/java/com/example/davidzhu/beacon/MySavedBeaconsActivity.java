@@ -1,5 +1,6 @@
 package com.example.davidzhu.beacon;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -46,12 +47,9 @@ public class MySavedBeaconsActivity extends AppCompatActivity {
                     public void done(List<Beacon> results, ParseException e) {
                         if (e == null) {
                             for (Beacon beacon : results) {
-                                //beacon.deleteInBackground(); //need to do beacon.remove();
-                                beaconIds.clear();
-                                beaconDisplayNames.clear();
-                                adapter.clear();
-                                queryMyCreatedBeacons();
-                                adapter.notifyDataSetChanged();
+                                Intent intent = new Intent(MySavedBeaconsActivity.this, ViewBeaconActivity.class);
+                                intent.putExtra("beaconId", beacon.getObjectId());
+                                startActivity(intent);
                             }
                         }
                     }

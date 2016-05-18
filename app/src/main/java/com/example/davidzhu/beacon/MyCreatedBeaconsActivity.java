@@ -49,16 +49,6 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MyCreatedBeaconsActivity.this, ViewBeaconActivity.class);
                                 intent.putExtra("beaconId", beacon.getObjectId());
                                 startActivity(intent);
-                                /*beacon.deleteInBackground();
-                                beaconIds.clear();
-                                beaconDisplayNames.clear();
-                                adapter.clear();
-                                queryMyCreatedBeacons();
-                                adapter.notifyDataSetChanged();*/
-
-                                //listView.invalidate();
-                                //queryMyCreatedBeacons();
-
                             }
                         }
                     }
