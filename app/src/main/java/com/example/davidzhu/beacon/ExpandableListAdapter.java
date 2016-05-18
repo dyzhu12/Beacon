@@ -13,20 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Activity mContext;
-    private String mDataHeader; // header titles
-    // child data in format of header title, child title
-    private List<String> mListDataChild;
+    private ArrayList<String> mListDataChild;
     public int mCount;
 
-    public ExpandableListAdapter(Activity context, String listDataHeader, List<String> listChildData) {
+    SearchIconLoader iconLoader = new SearchIconLoader();
+
+    public ExpandableListAdapter(Activity context, ArrayList<String> listChildData) {
         mContext = context;
-        mDataHeader = listDataHeader;
         mListDataChild = listChildData;
         mCount =  mListDataChild.size();
     }
@@ -97,6 +97,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.search_exp_list_item, null);
         }
+
+        ImageView icon = (ImageView) convertView.findViewById(R.id.search_exp_itm_img);
+        icon.setImageResource(iconLoader.getIcon(mListDataChild.get(childPosition)));
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.search_exp_itm_name);
 

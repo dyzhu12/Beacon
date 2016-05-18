@@ -11,17 +11,21 @@ import java.util.ArrayList;
 
 public class SearchRecycleViewAdapter extends RecyclerView.Adapter<SearchRecycleViewAdapter.SearchPlaceViewHolder> {
 
+
+    // default lists
     int mSize;
-    ArrayList<Integer> mImages;
-    ArrayList<String> mNames;
-    ArrayList<String> mSavedTags;
+    ArrayList<String> mDefaultTags;
     ExpandableListAdapter mELA;
+    // user lists
+    ArrayList<String> mUserSavedTags;
+    SearchIconLoader iconLoader = new SearchIconLoader();
 
     public static class SearchPlaceViewHolder extends RecyclerView.ViewHolder
                                                 implements View.OnClickListener{
 
         TextView itemName;
         ImageView image;
+
         ArrayList<String> mSavedTags;
         ExpandableListAdapter mELA;
 
@@ -34,26 +38,30 @@ public class SearchRecycleViewAdapter extends RecyclerView.Adapter<SearchRecycle
             mELA = adapter;
         }
 
-
         @Override
         public void onClick(View view) {
             int pos = getAdapterPosition();
-
             switch (pos) {
                 case 0:
-                    mSavedTags.add(itemView.getResources().getString(R.string.food));
-                    mELA.mCount++;
-                    mELA.notifyDataSetChanged();
+                    if (!mSavedTags.contains("Food")) {
+                        mSavedTags.add(itemView.getResources().getString(R.string.food));
+                        mELA.mCount++;
+                        mELA.notifyDataSetChanged();
+                    }
                     break;
                 case 1:
-                    mSavedTags.add(itemView.getResources().getString(R.string.free));
-                    mELA.mCount++;
-                    mELA.notifyDataSetChanged();
+                    if (!mSavedTags.contains("Free")) {
+                        mSavedTags.add(itemView.getResources().getString(R.string.free));
+                        mELA.mCount++;
+                        mELA.notifyDataSetChanged();
+                    }
                     break;
                 case 2:
-                    mSavedTags.add(itemView.getResources().getString(R.string.fun));
-                    mELA.mCount++;
-                    mELA.notifyDataSetChanged();
+                    if (!mSavedTags.contains("Fun")) {
+                        mSavedTags.add(itemView.getResources().getString(R.string.fun));
+                        mELA.mCount++;
+                        mELA.notifyDataSetChanged();
+                    }
                     break;
                 case 3:
                     break;
@@ -63,29 +71,27 @@ public class SearchRecycleViewAdapter extends RecyclerView.Adapter<SearchRecycle
 
     }
 
-    SearchRecycleViewAdapter(ArrayList<String> itemNames, ArrayList<Integer> itemImages,
-                             int size, ArrayList<String> savedTags, ExpandableListAdapter adapter){
-        mNames = itemNames;
-        mImages = itemImages;
-        mSize = size;
-        mSavedTags = savedTags;
+    SearchRecycleViewAdapter(ArrayList<String> defaultItems, ArrayList<String> userSavedItems, ExpandableListAdapter adapter){
+        mDefaultTags = defaultItems;
+        mSize = mDefaultTags.size();
+        mUserSavedTags = userSavedItems;
         mELA = adapter;
     }
 
     @Override
     public int getItemCount() {
-        return mNames.size();
+        return mDefaultTags.size();
     }
 
     @Override
     public SearchPlaceViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_item, viewGroup, false);
-        return new SearchPlaceViewHolder(v,mSavedTags,mELA);
+        return new SearchPlaceViewHolder(v,mUserSavedTags,mELA);
     }
 
     @Override
-    public void onBindViewHolder(SearchPlaceViewHolder personViewHolder, int i) {
-        personViewHolder.itemName.setText(mNames.get(i));
-        if (i != 3) {personViewHolder.image.setImageResource(mImages.get(i));}
+    public void onBindViewHolder(SearchPlaceViewHolder defaultItemViewHolder, int i) {
+        defaultItemViewHolder.itemName.setText(mDefaultTags.get(i));
+        if (i != 3) {defaultItemViewHolder.image.setImageResource(iconLoader.getIcon(mDefaultTags.get(i)));}
     }
 }

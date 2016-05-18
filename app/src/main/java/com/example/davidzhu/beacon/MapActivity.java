@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.location.Location;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -135,9 +137,13 @@ public class MapActivity extends FragmentActivity implements
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
         user = ParseUser.getCurrentUser();
 
         SearchView searchBar = (SearchView) findViewById(R.id.main_search);
+
+        EditText searchBar = (EditText) findViewById(R.id.main_search);
+        searchBar.setCursorVisible(false);
         searchBar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 launchSearch();
@@ -268,7 +274,7 @@ public class MapActivity extends FragmentActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds mDefaultTagsNames to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);

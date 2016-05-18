@@ -5,25 +5,28 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.Toast;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Search extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
 
-    String headerName = "";
-    ArrayList<String> childList = new ArrayList<String>();
-
-    ArrayList<String> items = new ArrayList<String>();
-    ArrayList<Integer> itemsImg = new ArrayList<Integer>();
+    ArrayList<String> mUserTagsNames = new ArrayList<String>();
+    ArrayList<String> mDefaultTagsNames = new ArrayList<String>();
 
     ExpandableListView expListView;
 
+    ParseUser mUser;
+    SearchIconLoader il = new SearchIconLoader();
 
 
     @Override
@@ -42,11 +45,16 @@ public class Search extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
 
+        mUser = ParseUser.getCurrentUser();
+        List<String> savedTags = mUser.getList("savedTags");
+        for (String temp : savedTags) {
+            mUserTagsNames.add(temp);
+        }
+
         createGroupList();
 
-
         expListView = (ExpandableListView) findViewById(R.id.search_exp_tags_list);
-        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, headerName, childList);
+        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, mUserTagsNames);
         expListView.setAdapter(expListAdapter);
 
         expListView.setOnChildClickListener(new OnChildClickListener() {
@@ -67,30 +75,26 @@ public class Search extends AppCompatActivity {
         rv.setHasFixedSize(true);
         mLayoutManager = new CustomLinearLayoutManager(this);
         rv.setLayoutManager(mLayoutManager);
-        SearchRecycleViewAdapter srva = new SearchRecycleViewAdapter(items,itemsImg,10,childList,expListAdapter);
+        SearchRecycleViewAdapter srva = new SearchRecycleViewAdapter(mDefaultTagsNames, mUserTagsNames,expListAdapter);
         rv.setAdapter(srva);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();  // Always call the superclass method first
+
+        mUser.remove("savedTags");
+        mUser.addAllUnique("savedTags", mUserTagsNames);
+        mUser.saveInBackground();
     }
 
 
     private void createGroupList() {
-        childList.add("BOO_1");
-        childList.add("BOO_2");
-        childList.add("BOO_3");
-        childList.add("BOO_4");
-        childList.add("BOO_5");
-
-        items.add(getResources().getString(R.string.food));
-        items.add(getResources().getString(R.string.free));
-        items.add(getResources().getString(R.string.fun));
-        items.add(getResources().getString(R.string.more_cat));
-
-
-        itemsImg.add(R.drawable.ic_local_dining_black_24dp);
-        itemsImg.add(R.drawable.ic_local_atm_black_24dp);
-        itemsImg.add(R.drawable.ic_insert_emoticon_black_24dp);
-
+        mDefaultTagsNames.add(getResources().getString(R.string.food));
+        mDefaultTagsNames.add(getResources().getString(R.string.free));
+        mDefaultTagsNames.add(getResources().getString(R.string.fun));
+        mDefaultTagsNames.add(getResources().getString(R.string.more_cat));
     }
-
 
 
 }
