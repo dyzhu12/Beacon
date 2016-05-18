@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -111,6 +112,7 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         if (!editMode) {
             ab.setTitle(R.string.create_beacon);
             beacon = new Beacon();
+            ((Button) findViewById(R.id.delete_button)).setVisibility(View.GONE);
         } else {
             ab.setTitle(R.string.edit_beacon);
 
@@ -494,5 +496,23 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
         beacon.initPopularity();
         beacon.saveInBackground();
         finish();
+    }
+
+    public void deleteBeacon(View view) {
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+        query.whereEqualTo("objectId", beacon.getObjectId());
+        final CreateBeaconActivity self = this;
+        query.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e == null) {
+                    Beacon deletedBeacon = objects.get(0);
+
+                    deletedBeacon.deleteInBackground();
+                    Intent intent = new Intent(self, MapActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 }
