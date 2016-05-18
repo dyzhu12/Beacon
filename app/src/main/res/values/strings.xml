@@ -127,5 +127,13 @@
     <!-- View Beacon -->
     <string name="save_beacon">Save Beacon</string>
 
+    <!-- Settings Beacon -->
+    <string name="phone">Phone</string>
+    <string name="mobile">Mobile</string>
+    <string name="work">Work</string>
+    <string name="email">Email</string>
+    <string name="settings_web_text">Website</string>
+    <string name="settings_address_text">Address</string>
+
 
 </resources>
