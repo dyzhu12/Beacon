@@ -1,6 +1,7 @@
 package com.example.davidzhu.beacon;
 
 import android.graphics.Bitmap;
+import android.util.Pair;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
@@ -10,6 +11,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -155,5 +158,33 @@ public class Beacon extends ParseObject {
     }
 
 
+    public ArrayList<Object> getItems() {
+        ArrayList<Object> items = new ArrayList<Object>();
 
+        items.add(getInt("timesSaved"));
+
+
+        final SimpleDateFormat timeFormat = new SimpleDateFormat("M/F hh:mm a");
+        String startDate = timeFormat.format(getDate("startDate"));
+        String endDate = timeFormat.format(getDate("endDate"));
+
+        String date = startDate + " to " + endDate;
+
+        ArrayList<String> tagsList = (ArrayList<String>) get("tags");
+        String tags = "";
+        for (int i = 0; i < tagsList.size(); i++) {
+            if (i != (tagsList.size()-1)) {
+                tags += tagsList.get(i) + ", ";
+            } else {
+                tags += tagsList.get(i);
+            }
+        }
+
+        items.add(new Pair("Date", date));
+        items.add(new Pair("Address", getString("address")));
+        items.add(new Pair("Phone Number", getString("phone")));
+        items.add(new Pair("Website", getString("website")));
+        items.add(new Pair("Tags", tags));
+        return items;
+    }
 }
