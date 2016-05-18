@@ -419,15 +419,54 @@ public class MapActivity extends FragmentActivity implements
                     String i = beacon.getObjectId();
                     ParseUser c = beacon.getCreator();
                     String a = c.getObjectId();
+                    ArrayList<String> tags = beacon.getTags();
+
+
 
 
                         MarkerOptions markerOpts =
                                 new MarkerOptions().position(new LatLng(beacon.getLocation().getLatitude(), beacon
                                         .getLocation().getLongitude())).snippet(beacon.getObjectId());
                         // Display a green marker with the post information
+
+                    if(tags.contains("Food")){
+                        markerOpts =
+                            markerOpts.title(beacon.getDisplayName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+                    }
+                    else if(tags.contains("Free")){
+
                         markerOpts =
                                 markerOpts.title(beacon.getDisplayName())
                                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    }
+                    else if(tags.contains("Fun")){
+                        markerOpts =
+                                markerOpts.title(beacon.getDisplayName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    }
+                    else if(tags.contains("Fabulous")){
+                        markerOpts =
+                                markerOpts.title(beacon.getDisplayName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                    }else{
+                        markerOpts =
+                                markerOpts.title(beacon.getDisplayName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                    }
+
+
+                    /*
+                    Free Green
+                    Food Blue
+                    Fun Red
+                    Fabulous Pink
+
+                     */
+
+
+
+                        // Display a green marker with the post information
+                        /*markerOpts =
+                                markerOpts.title(beacon.getDisplayName()).snippet(beacon.getCreator().getObjectId())
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));*/
 
                         // Add a new marker
                         mapFragment.getMap().addMarker(markerOpts);
