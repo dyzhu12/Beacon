@@ -104,6 +104,16 @@
                 android:value="com.example.davidzhu.beacon.MapActivity" />
         </activity>
 
+        <activity
+            android:name=".SearchMoreTags"
+            android:label="@string/title_activity_search_more_tags"
+            android:parentActivityName=".Search"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.davidzhu.beacon.Search" />
+        </activity>
+
         <activity android:name=".MySavedBeaconsActivity"
             android:label="@string/my_saved_beacons"
             android:parentActivityName=".MapActivity"
