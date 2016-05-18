@@ -33,23 +33,60 @@ public class ListBeaconActivity extends AppCompatActivity {
         user = ParseUser.getCurrentUser();
         sort = user.getString("sortFilter");
 
-//        System.out.println(user.get("sortFilter"));
         String userId = user.getString("username");
         if (sort.equals("popularity")) {
             doPopularityQuery();
         }
-
+        if (sort.equals("distance")) {
+            doDistanceQuery();
+        }
+        if (sort.equals("name")) {
+            doNameQuery();
+        }
 
     }
 
-    private void doPopularityQuery() {
-
+    private void doDistanceQuery() {
         ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
-        query.orderByDescending("popularity");
+        query.orderByDescending("name").whereExists("location");
         query.findInBackground(new FindCallback<Beacon>() {
             @Override
             public void done(List<Beacon> objects, ParseException e) {
-                if (e != null) {
+                if (e == null) {
+                    ParseUser user = ParseUser.getCurrentUser();
+                    ArrayList<Beacon> sortedList = new ArrayList<Beacon>();
+                    for (int i = 0; i < objects.size(); i++) {
+                        double distance = objects.get(i).getLocation().distanceInMilesTo(user.getParseGeoPoint("location"));
+
+                        if (sortedList.size() == 0) {
+                            sortedList.add(objects.get(i));
+                        } else {
+                            for (int j = 0; j < sortedList.size(); j++) {
+                                double distance2 = sortedList.get(j).getLocation().distanceInMilesTo(user.getParseGeoPoint("location"));
+                                if (distance < distance2) {
+                                    sortedList.add(j, objects.get(i));
+                                    break;
+                                }
+                                if (j == sortedList.size() - 1) {
+                                    sortedList.add(objects.get(i));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    setAdapter(sortedList);
+                }
+            }
+        });
+    }
+
+    private void doPopularityQuery() {
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+        query.orderByAscending("popularity").whereExists("location");
+        query.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e == null) {
                     setAdapter(objects);
                 }
             }
@@ -74,10 +111,42 @@ public class ListBeaconActivity extends AppCompatActivity {
         return(super.onOptionsItemSelected(item));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            String sort = (String) data.getExtras().get("sort");
+
+            if (sort.equals("distance")) {
+                doDistanceQuery();
+            }
+            if (sort.equals("popularity")) {
+                doPopularityQuery();
+            }
+            if (sort.equals("name")) {
+                doNameQuery();
+            }
+        }
+    }
+
+    private void doNameQuery() {
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+        query.orderByDescending("name").whereExists("location");
+        query.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e == null) {
+                    setAdapter(objects);
+                }
+            }
+        });
+    }
+
     // Handler for FILTER button in bottom right -- launches Filter Activity
     public void showFiltersForList(View view) {
         Intent intent = new Intent(this, FilterBeaconActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
     }
 }

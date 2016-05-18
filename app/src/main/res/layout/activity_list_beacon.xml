@@ -32,35 +32,6 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/saved_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/temp_saved_count"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:layout_margin="4dp"
-                android:textColor="@android:color/black"/>
-            <TextView
-                android:id="@+id/bullet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bullet"
-                android:layout_toRightOf="@id/saved_count"
-                android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:layout_margin="4dp"
-                android:textColor="@android:color/black"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sort_filler"
-                android:layout_toRightOf="@id/bullet"
-                android:layout_centerVertical="true"
-                android:layout_margin="4dp"
-                android:textColor="@android:color/black"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter"

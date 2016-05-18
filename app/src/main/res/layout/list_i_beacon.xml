@@ -4,6 +4,10 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
+        android:id="@+id/filler_id"
         android:orientation="vertical"
         android:layout_margin="16dp"
         android:layout_width="match_parent"
