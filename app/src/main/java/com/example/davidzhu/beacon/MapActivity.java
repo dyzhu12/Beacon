@@ -36,6 +36,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+
 import com.parse.ParseUser;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -103,7 +104,9 @@ public class MapActivity extends FragmentActivity implements
                 .addApi(LocationServices.API)
                 .build();
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         mapFragment.getMap().setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             public void onCameraChange(CameraPosition position) {
                 // When the camera changes, update the query
@@ -335,6 +338,7 @@ public class MapActivity extends FragmentActivity implements
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
     }
 
+
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
 
@@ -436,5 +440,6 @@ public class MapActivity extends FragmentActivity implements
     private ParseGeoPoint geoPointFromLocation(Location loc) {
         return new ParseGeoPoint(loc.getLatitude(), loc.getLongitude());
     }
+
 
 }
