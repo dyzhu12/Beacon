@@ -7,6 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.parse.Parse;
+import com.parse.ParseUser;
 
 
 /**
@@ -15,18 +19,27 @@ import android.widget.EditText;
 public class MyAccountActivity extends AppCompatActivity implements View.OnFocusChangeListener {
 
     // Filler values
-    private String userEmail = "scarlettjohansson@gmail.com";
-    private String userName = "Scarlett Johansson";
+    private String userEmail;
+    private String userName;
 
     private EditText nameView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_account);
 
+
+        ParseUser user = ParseUser.getCurrentUser();
+        userEmail = (String) user.get("email");
+        userName = (String) user.get("username");
+
         // Set subtitle to user gmail
         getSupportActionBar().setSubtitle(userEmail);
+
+
 
         nameView = (EditText) findViewById(R.id.real_name);
         nameView.setText(userName);
@@ -54,7 +67,9 @@ public class MyAccountActivity extends AppCompatActivity implements View.OnFocus
 
     // TODO Save the user's name after editing text
     public void saveName(View v) {
-        System.out.println("Saving Name");
+        ParseUser user = ParseUser.getCurrentUser();
+        user.put("username", ((TextView) v).getText().toString());
+        user.saveInBackground();
     }
 
     public void launchChangePassword(View view) {
