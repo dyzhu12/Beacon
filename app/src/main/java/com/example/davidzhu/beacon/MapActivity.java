@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.fitness.data.Application;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
@@ -139,8 +137,6 @@ public class MapActivity extends FragmentActivity implements
 
 
         user = ParseUser.getCurrentUser();
-
-        SearchView searchBar = (SearchView) findViewById(R.id.main_search);
 
         EditText searchBar = (EditText) findViewById(R.id.main_search);
         searchBar.setCursorVisible(false);
