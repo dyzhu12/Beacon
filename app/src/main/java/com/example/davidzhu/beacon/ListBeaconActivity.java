@@ -7,25 +7,57 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by David Zhu on 5/16/2016.
  */
 public class ListBeaconActivity extends AppCompatActivity {
 
-    private ArrayList<BeaconTest> beacons = new ArrayList();
+    private ArrayList<Beacon> beaconList;
     private BeaconAdapter adapter;
-
+    private ParseUser user;
+    private String sort;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_beacon);
 
-        adapter = new BeaconAdapter(this, R.layout.list_i_beacon, R.id.list_beacon_name, beacons);
 
-        // Testing with fake data!
-        populateWithFakeData();
+        user = ParseUser.getCurrentUser();
+        sort = user.getString("sortFilter");
+
+//        System.out.println(user.get("sortFilter"));
+        String userId = user.getString("username");
+        if (sort.equals("popularity")) {
+            doPopularityQuery();
+        }
+
+
+    }
+
+    private void doPopularityQuery() {
+
+        ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
+        query.orderByDescending("popularity");
+        query.findInBackground(new FindCallback<Beacon>() {
+            @Override
+            public void done(List<Beacon> objects, ParseException e) {
+                if (e != null) {
+                    setAdapter(objects);
+                }
+            }
+        });
+    }
+
+    private void setAdapter(List<Beacon> objects) {
+        adapter = new BeaconAdapter(this, R.layout.list_i_beacon, R.id.list_beacon_name, (ArrayList<Beacon>) objects);
 
         ListView beaconList = (ListView) findViewById(R.id.beacon_list);
         beaconList.setAdapter(adapter);
@@ -40,18 +72,6 @@ public class ListBeaconActivity extends AppCompatActivity {
         }
 
         return(super.onOptionsItemSelected(item));
-    }
-
-    public void populateWithFakeData() {
-        beacons.add(new BeaconTest("Free Pizza", 53));
-        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
-        beacons.add(new BeaconTest("Communist Party", 5));
-        beacons.add(new BeaconTest("Free Pizza", 53));
-        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
-        beacons.add(new BeaconTest("Communist Party", 5));
-        beacons.add(new BeaconTest("Free Pizza", 53));
-        beacons.add(new BeaconTest("Llamma Extravaganza", 9001));
-        beacons.add(new BeaconTest("Communist Party", 5));
     }
 
     // Handler for FILTER button in bottom right -- launches Filter Activity

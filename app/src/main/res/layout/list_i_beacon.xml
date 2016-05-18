@@ -60,6 +60,7 @@
         </LinearLayout>
     </LinearLayout>
     <ImageView
+        android:id="@+id/list_beacon_image"
         android:layout_alignParentEnd="true"
         android:layout_width="64dp"
         android:layout_height="64dp"

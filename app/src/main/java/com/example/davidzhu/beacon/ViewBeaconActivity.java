@@ -97,8 +97,6 @@ public class ViewBeaconActivity extends AppCompatActivity {
 
                     // Only show the edit fab if the user is the owner
                     ArrayList<String> userBeacons = (ArrayList) user.get("created");
-                    System.out.println(beacon.getCreator().getObjectId());
-                    System.out.println(user.getObjectId());
                     if (!beacon.getCreator().getObjectId().equals(user.getObjectId())) {
                         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.edit_fab);
                         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
