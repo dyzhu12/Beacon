@@ -1,26 +1,30 @@
 package com.example.davidzhu.beacon;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.Toast;
+import java.util.ArrayList;
 
-public class search extends AppCompatActivity {
-    private RecyclerView mCardListView;
-    private RecyclerView.Adapter mAdapter;
+public class Search extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private final int numOfCards = 3;
-    private static final  int SCROLL_DIRECTION_UP = -1;
+    String headerName = "";
+    ArrayList<String> childList = new ArrayList<String>();
+
+    ArrayList<String> items = new ArrayList<String>();
+    ArrayList<Integer> itemsImg = new ArrayList<Integer>();
+
+    ExpandableListView expListView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,34 +42,55 @@ public class search extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
 
+        createGroupList();
 
 
-        mCardListView = (RecyclerView) findViewById(R.id.search_card_list);
-        mCardListView.setHasFixedSize(true);
+        expListView = (ExpandableListView) findViewById(R.id.search_exp_tags_list);
+        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, headerName, childList);
+        expListView.setAdapter(expListAdapter);
 
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mCardListView.setLayoutManager(mLayoutManager);
-        // specify an adapter (see also next example)
-        mAdapter = new SearchAdapter(numOfCards);
-        mCardListView.setAdapter(mAdapter);
+        expListView.setOnChildClickListener(new OnChildClickListener() {
 
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                final String selected = (String) expListAdapter.getChild(
+                        groupPosition, childPosition);
+                Toast.makeText(getBaseContext(), selected, Toast.LENGTH_LONG)
+                        .show();
 
-        // need to elevate an app bar to make it look Google Maps like
-        // add on scroll listener to the list to show/remove divider
-        mCardListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (mCardListView.canScrollVertically(SCROLL_DIRECTION_UP)) {
-                    findViewById(R.id.search_app_bar).setElevation(10);
-                } else {
-                    findViewById(R.id.search_app_bar).setElevation(0);
-
-                }
+                return true;
             }
-
         });
 
+
+        RecyclerView rv = (RecyclerView) findViewById(R.id.search_nearby);
+        rv.setHasFixedSize(true);
+        mLayoutManager = new CustomLinearLayoutManager(this);
+        rv.setLayoutManager(mLayoutManager);
+        SearchRecycleViewAdapter srva = new SearchRecycleViewAdapter(items,itemsImg,10,childList,expListAdapter);
+        rv.setAdapter(srva);
     }
+
+
+    private void createGroupList() {
+        childList.add("BOO_1");
+        childList.add("BOO_2");
+        childList.add("BOO_3");
+        childList.add("BOO_4");
+        childList.add("BOO_5");
+
+        items.add(getResources().getString(R.string.food));
+        items.add(getResources().getString(R.string.free));
+        items.add(getResources().getString(R.string.fun));
+        items.add(getResources().getString(R.string.more_cat));
+
+
+        itemsImg.add(R.drawable.ic_local_dining_black_24dp);
+        itemsImg.add(R.drawable.ic_local_atm_black_24dp);
+        itemsImg.add(R.drawable.ic_insert_emoticon_black_24dp);
+
+    }
+
+
 
 }

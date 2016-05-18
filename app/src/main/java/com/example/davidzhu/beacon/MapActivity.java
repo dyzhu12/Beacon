@@ -525,7 +525,7 @@ public class MapActivity extends FragmentActivity implements
     }
 
     private void launchSearch() {
-        Intent intent = new Intent(this, search.class);
+        Intent intent = new Intent(this, Search.class);
         startActivity(intent);
     }
 

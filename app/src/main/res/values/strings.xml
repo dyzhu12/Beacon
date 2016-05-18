@@ -144,4 +144,10 @@
 
     <string name="title_activity_search">search</string>
 
+    <string name="selected_tags">SELECTED TAGS</string>
+    <string name="food">Food</string>
+    <string name="free">Free</string>
+    <string name="fun">Fun</string>
+    <string name="more_cat">MORE CATEGORIES</string>
+
 </resources>

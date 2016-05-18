@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
-    tools:context="com.example.davidzhu.beacon.search">
+    tools:context="com.example.davidzhu.beacon.Search"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/search_card_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorSearchBackground"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
+    <!-- App bar -->
     <android.support.design.widget.AppBarLayout
         android:id="@+id/search_app_bar"
         android:layout_width="match_parent"
@@ -58,4 +53,66 @@
 
     </android.support.design.widget.AppBarLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+
+
+<!--            <android.support.v7.widget.RecyclerView
+                android:id="@+id/search_nearby"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorSearchBackground"/>
+
+-->
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchColumns="0"
+            android:background="@color/colorSearchBackground">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="2dp">
+
+                    <ExpandableListView
+                        android:id="@+id/search_exp_tags_list"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:groupIndicator="@null" />
+
+                </android.support.v7.widget.CardView>
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="8dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="2dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/search_nearby"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </android.support.v7.widget.CardView>
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>
