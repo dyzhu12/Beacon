@@ -16,9 +16,14 @@
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
+
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- SDK version specifications -->
+    <uses-sdk android:minSdkVersion="21"
+        android:targetSdkVersion="23" />
 
 
     <application
@@ -52,6 +57,17 @@
             android:name=".CreateBeaconActivity"
             android:parentActivityName=".MapActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.davidzhu.beacon.MapActivity" />
+        </activity>
+
+        <activity
+            android:name=".Search"
+            android:label="@string/title_activity_search"
+            android:parentActivityName=".MapActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity" />

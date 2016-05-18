@@ -6,6 +6,7 @@
     <string name="list_beacons">List Beacons</string>
     <string name="filter">Filter</string>
     <string name="search_for_beacon">Search Beacons</string>
+
     <string name="about">About</string>
     <string name="my_created_beacons">My Created Beacons</string>
     <string name="my_saved_beacons">My Saved Beacons</string>
@@ -91,6 +92,9 @@
     <string name="by">by</string>
     <string name="popularity">Popularity</string>
     <string name="sort_by_name">Name</string>
+    <string name="highest_match">Highest Match</string>
+
+
     <string name="title_activity_login">loginActivity</string>
     <string name="title_activity_login_signup">Sign in</string>
 
@@ -137,5 +141,13 @@
 
     <!-- Edit Beacon -->
     <string name="edit_beacon">Edit Beacon</string>
+
+    <string name="title_activity_search">search</string>
+
+    <string name="selected_tags">SELECTED TAGS</string>
+    <string name="food">Food</string>
+    <string name="free">Free</string>
+    <string name="fun">Fun</string>
+    <string name="more_cat">MORE CATEGORIES</string>
 
 </resources>

@@ -17,14 +17,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-
 import android.location.Location;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.fitness.data.Application;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
@@ -137,7 +135,17 @@ public class MapActivity extends FragmentActivity implements
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
         user = ParseUser.getCurrentUser();
+
+        EditText searchBar = (EditText) findViewById(R.id.main_search);
+        searchBar.setCursorVisible(false);
+        searchBar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                launchSearch();
+            }
+        });
+
     }
 
     protected void onResume(){
@@ -195,6 +203,7 @@ public class MapActivity extends FragmentActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
     }
 
+
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location services connected.");
@@ -212,6 +221,7 @@ public class MapActivity extends FragmentActivity implements
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
         }
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -260,7 +270,7 @@ public class MapActivity extends FragmentActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds mDefaultTagsNames to the action bar if it is present.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
@@ -517,4 +527,10 @@ public class MapActivity extends FragmentActivity implements
         startActivity(intent);
         return false;
     }
+
+    private void launchSearch() {
+        Intent intent = new Intent(this, Search.class);
+        startActivity(intent);
+    }
+
 }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    tools:context="com.example.davidzhu.beacon.Search"
+    android:orientation="vertical">
+
+    <!-- App bar -->
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/search_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorSearchBackground">
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/search_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#ffffff"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat"
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:layout_margin="16dp"
+                android:weightSum="1">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="8dp">
+
+                <EditText
+                    android:id="@+id/search_field"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/search_for_beacon"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="center"
+                    android:gravity="left"
+                    android:textCursorDrawable="@null"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_keyboard_voice_24dp"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+
+
+<!--            <android.support.v7.widget.RecyclerView
+                android:id="@+id/search_nearby"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorSearchBackground"/>
+
+-->
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchColumns="0"
+            android:background="@color/colorSearchBackground">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="2dp">
+
+                    <ExpandableListView
+                        android:id="@+id/search_exp_tags_list"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:groupIndicator="@null" />
+
+                </android.support.v7.widget.CardView>
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="8dp"
+                    card_view:cardCornerRadius="2dp"
+                    card_view:cardElevation="2dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/search_nearby"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </android.support.v7.widget.CardView>
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>

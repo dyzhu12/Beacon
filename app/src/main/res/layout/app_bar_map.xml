@@ -29,14 +29,16 @@
                 android:paddingLeft="0dp">
 
                 <!-- @Sasha make sure to give the placeholder a value of Search for Beacon" -->
-                <android.support.v7.widget.SearchView
+                <EditText
+                    android:id="@+id/main_search"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:layout_gravity="center"
                     android:gravity="left"
-                    android:textCursorDrawable="@null"/>
+                    android:textCursorDrawable="@null"
+                    android:hint="@string/search_for_beacon"/>
                 <ImageButton
                     android:layout_gravity="center"
                     android:gravity="left"
