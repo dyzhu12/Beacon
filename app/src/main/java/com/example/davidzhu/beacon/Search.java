@@ -59,7 +59,7 @@ public class Search extends AppCompatActivity {
 
         // when creating an activity, get the search field in focus and retract the keyboard
         EditText searchField = (EditText) findViewById(R.id.search_field);
-        searchField.requestFocus();
+        //searchField.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
 
