@@ -7,24 +7,18 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyCreatedBeaconsActivity extends AppCompatActivity {
-    //private TextView itemTextView;
-    //private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter;
 
-    //fake data for testing purposes
-    //private ArrayList<String> testArray;
+    final ArrayList<String> beaconDisplayNames = new ArrayList<String>();
+    final ArrayList<String> beaconIds = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,60 +28,35 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        final ArrayList<String> mCreatedBeaconsArray = new ArrayList<String>();
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.beacon_list_item, mCreatedBeaconsArray);
+        //getBeaconDisplayNames();
+        adapter = new ArrayAdapter<String>(this, R.layout.beacon_list_item, beaconDisplayNames);
+        System.out.println("LINE 34");
 
-        ListView listView = (ListView) findViewById(R.id.list_view_my_created_beacons);
+        final ListView listView = (ListView) findViewById(R.id.list_view_my_created_beacons);
         listView.setAdapter(adapter);
-
-        //deletes user's beacon upon clicking the 'x'
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-//                System.out.println("in onclicklistener");
-//
-//                String beacon_display_name = mCreatedBeaconsArray.get(position);
-//                System.out.println("selected: " + beacon_display_name);
-//
-//                ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
-//                query.whereEqualTo("name", beacon_display_name); //runs risk of deleting beacons w/ same name
-//                query.findInBackground(new FindCallback<Beacon>() {
-//                    @Override
-//                    public void done(List<Beacon> results, ParseException e) {
-//                        if (e == null) {
-//                            for (Beacon beacon : results) { //may cause problems if two beacons have same name, will fix later
-//                                System.out.println("deleting: " + beacon.getDisplayName());
-//
-//                                beacon.deleteInBackground();
-//                                adapter.notifyDataSetChanged();
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                System.out.println("in onclicklistener");
-
-                String beacon_display_name = mCreatedBeaconsArray.get(position);
-                System.out.println("selected: " + beacon_display_name);
+                String deleted_beacon_id = beaconIds.get(position);
 
                 ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
-                query.whereEqualTo("name", beacon_display_name); //runs risk of deleting beacons w/ same name
+                query.whereEqualTo("objectId", deleted_beacon_id);
                 query.findInBackground(new FindCallback<Beacon>() {
                     @Override
                     public void done(List<Beacon> results, ParseException e) {
                         if (e == null) {
-                            for (Beacon beacon : results) { //may cause problems if two beacons have same name, will fix later
-                                System.out.println("deleting: " + beacon.getDisplayName());
-
+                            for (Beacon beacon : results) { //mostly fixed, but strange behavior when you add beacons (names) in the order: 
                                 beacon.deleteInBackground();
+                                beaconIds.clear();
+                                beaconDisplayNames.clear();
+                                adapter.clear();
+                                queryMyCreatedBeacons();
                                 adapter.notifyDataSetChanged();
+
+                                //listView.invalidate();
+                                //queryMyCreatedBeacons();
                             }
                         }
                     }
@@ -95,6 +64,29 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
             }
         });
 
+        queryMyCreatedBeacons();
+    }
+
+//    //myCreatedDataName is in the format beaconid.beacondisplayname
+//    private void getBeaconIds(){
+//        beaconIds.clear();
+//        for(String myCreatedBeacon : mCreatedBeaconsArray){
+//            String[] array = myCreatedBeacon.split("."); //split myCreatedBeacons
+//            beaconIds.add(array[0]);
+//            //beaconDisplayNames.add(array[1]);
+//        }
+//    }
+//
+//    //myCreatedDataBeacon is in the format beaconid.beacondisplayname
+//    private void getBeaconDisplayNames(){
+//        beaconDisplayNames.clear();
+//        for(String myCreatedBeacon : mCreatedBeaconsArray){
+//            String[] array = myCreatedBeacon.split("."); //split myCreatedBeacons
+//            beaconDisplayNames.add(array[1]);
+//        }
+//    }
+
+    private void queryMyCreatedBeacons() {
         ParseUser user = ParseUser.getCurrentUser();
         String userId = user.getObjectId();
 
@@ -106,18 +98,18 @@ public class MyCreatedBeaconsActivity extends AppCompatActivity {
             public void done(List<Beacon> results, ParseException e) {
                 if (e == null) {
                     //for each beacon in the objects List
-                    int size = results.size(); //should be number of beacons created by current user
-                    System.out.println("size of queried <Beacons> list = " + size);
-
                     for (Beacon beacon : results) {
-                        String myCreatedBeaconName = beacon.getString("name");
-                        mCreatedBeaconsArray.add(myCreatedBeaconName);
+                        String beaconId = beacon.getObjectId();
+                        String beaconDisplayName = beacon.getString("name");
+                        beaconIds.add(beaconId);
+                        beaconDisplayNames.add(beaconDisplayName);
                         adapter.notifyDataSetChanged();
-                        System.out.println("added myCreatedBeaconName: " + myCreatedBeaconName + ", yay!");
-
                     }
-                }
+                 }
             }
         });
+
     }
 }
+
+
