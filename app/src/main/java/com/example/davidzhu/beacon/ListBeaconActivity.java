@@ -48,7 +48,7 @@ public class ListBeaconActivity extends AppCompatActivity {
         List<String> savedTags = user.getList("savedTags");
         ParseQuery<Beacon> query = ParseQuery.getQuery("Beacon");
 
-        if(savedTags != null){
+        if(savedTags != null && savedTags.size() > 0){
             query.whereContainedIn("tags",savedTags);
         }
 

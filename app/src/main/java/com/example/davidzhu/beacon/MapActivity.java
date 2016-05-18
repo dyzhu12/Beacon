@@ -195,6 +195,7 @@ public class MapActivity extends FragmentActivity implements
 
         mMap.addMarker(new MarkerOptions().position(new LatLng(38.9897, -76.9378)));
 
+
     }
 
     /**
