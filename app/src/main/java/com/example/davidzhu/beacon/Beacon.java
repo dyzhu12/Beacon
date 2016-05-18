@@ -135,21 +135,21 @@ public class Beacon extends ParseObject {
         user.saveInBackground();
     }
 
-    //Times Saved
-    public int getTimesSaved(){
-        return getInt("timesSaved");
+    //popularity
+    public int getPopularity(){
+        return getInt("popularity");
     }
-    public void setTimesSaved(){
-        put("timesSaved", 0);
+    public void initPopularity(){
+        put("popularity", 0);
     }
 
     /***
-     * Increment the beacon's timesSaved count up or down. N should be 1 or -1.
+     * Increment the beacon's popularity count up or down. n should be 1 or -1.
      *
      * @param n is 1 or -1
      */
-    public void incrementTimesSaved(int n){
-        increment("timesSaved",n);
+    public void incrementPopularity(int n){
+        increment("popularity",n);
     }
 
 

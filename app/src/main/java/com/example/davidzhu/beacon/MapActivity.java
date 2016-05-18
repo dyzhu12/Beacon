@@ -74,6 +74,8 @@ public class MapActivity extends FragmentActivity implements
 
     private int mostRecentMapUpdate;
 
+    private ParseUser user;
+
 
     //MUST BE CHANGED TO USER SETTINGS
     private float radius = 2;
@@ -135,6 +137,7 @@ public class MapActivity extends FragmentActivity implements
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        user = ParseUser.getCurrentUser();
     }
 
     protected void onResume(){
@@ -383,12 +386,28 @@ public class MapActivity extends FragmentActivity implements
 
         //ParseQuery<Beacon> mapQuery = Beacon.getQuery();
         ParseQuery<Beacon> mapQuery = ParseQuery.getQuery("Beacon");
+        mapQuery.whereExists("location");
 
         // Set up additional query filters
-        //mapQuery.whereWithinMiles("location", myPoint, 2);
+        int distance = user.getInt("distanceFilter");
+        int popularity = user.getInt("ratingFilter");
+        String sort = user.getString("sortFilter");
+
+        if(distance != -1){
+            mapQuery.whereWithinMiles("location", myPoint, distance);
+        }
+
+        if(popularity != -1){
+            mapQuery.whereGreaterThanOrEqualTo("popularity",popularity);
+        }
+
+
+
+
+        //mapQuery.whereWithinMiles("location", myPoint, 5);
         //mapQuery.whereEqualTo("user","0g6uYAQYon");
         //mapQuery.include("user");
-        mapQuery.whereExists("location");
+
         //mapQuery.whereExists("name");
         //mapQuery.orderByDescending("createdAt");
         //mapQuery.setLimit(20);

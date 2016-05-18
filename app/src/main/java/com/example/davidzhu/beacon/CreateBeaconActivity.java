@@ -491,9 +491,11 @@ public class CreateBeaconActivity extends AppCompatActivity implements OnMapRead
             intent.putExtra("beaconId", beacon.getObjectId());
             setResult(RESULT_OK, intent);
         } else {
+            beacon.initPopularity();
             beacon.setCreator(ParseUser.getCurrentUser());
         }
 
+        beacon.initPopularity();
         beacon.saveInBackground();
         finish();
     }

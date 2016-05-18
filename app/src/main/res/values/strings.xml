@@ -90,7 +90,7 @@
     <string name="sort">Sort</string>
     <string name="by">by</string>
     <string name="popularity">Popularity</string>
-    <string name="highest_match">Highest Match</string>
+    <string name="sort_by_name">Name</string>
     <string name="title_activity_login">loginActivity</string>
     <string name="title_activity_login_signup">Sign in</string>
 

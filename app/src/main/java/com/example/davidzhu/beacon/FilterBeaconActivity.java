@@ -73,7 +73,7 @@ public class FilterBeaconActivity extends AppCompatActivity implements SeekBar.O
                 break;
             case "popularity": rSort.check(R.id.sort_popularity);
                 break;
-            case "match": rSort.check(R.id.sort_match);
+            case "name": rSort.check(R.id.sort_name);
                 break;
         }
 
@@ -123,7 +123,7 @@ public class FilterBeaconActivity extends AppCompatActivity implements SeekBar.O
                         break;
                     case R.id.sort_popularity: user.put("sortFilter", "popularity");
                         break;
-                    case R.id.sort_match: user.put("sortFilter", "match");
+                    case R.id.sort_name: user.put("sortFilter", "name");
                         break;
                 }
             }
