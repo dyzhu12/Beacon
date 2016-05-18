@@ -381,6 +381,8 @@ public class MapActivity extends FragmentActivity implements
             return;
         }
         final ParseGeoPoint myPoint = geoPointFromLocation(myLoc);
+        user.put("location",myPoint);
+        user.saveInBackground();
         // Create the map Parse query
 
 
