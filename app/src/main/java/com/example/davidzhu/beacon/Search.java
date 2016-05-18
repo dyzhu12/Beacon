@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Search extends AppCompatActivity {
+    private static final int VERTICAL_ITEM_SPACE = 12;
+
     private RecyclerView.LayoutManager mLayoutManager;
 
     ArrayList<String> mUserTagsNames = new ArrayList<String>();
@@ -47,8 +49,10 @@ public class Search extends AppCompatActivity {
 
         mUser = ParseUser.getCurrentUser();
         List<String> savedTags = mUser.getList("savedTags");
-        for (String temp : savedTags) {
-            mUserTagsNames.add(temp);
+        if (savedTags != null) {
+            for (String temp : savedTags) {
+                mUserTagsNames.add(temp);
+            }
         }
 
         createGroupList();
@@ -75,6 +79,7 @@ public class Search extends AppCompatActivity {
         rv.setHasFixedSize(true);
         mLayoutManager = new CustomLinearLayoutManager(this);
         rv.setLayoutManager(mLayoutManager);
+        rv.addItemDecoration(new DividerDecoration(getApplicationContext()));
         SearchRecycleViewAdapter srva = new SearchRecycleViewAdapter(mDefaultTagsNames, mUserTagsNames,expListAdapter);
         rv.setAdapter(srva);
     }
