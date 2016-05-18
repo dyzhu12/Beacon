@@ -20,6 +20,8 @@ import android.view.View;
 
 
 import android.location.Location;
+import android.widget.TextView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -31,12 +33,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseUser;
 
 public class MapActivity extends FragmentActivity implements
         OnMapReadyCallback,
         NavigationView.OnNavigationItemSelectedListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
+        DrawerLayout.DrawerListener,
         LocationListener{
 
     public static final String TAG = MapActivity.class.getSimpleName();
@@ -65,6 +69,7 @@ public class MapActivity extends FragmentActivity implements
                 .addApi(LocationServices.API)
                 .build();
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         //creates LocationRequest object
         mLocationRequest = LocationRequest.create()
             .setInterval(10*1000) //10s in millisecs
@@ -73,14 +78,15 @@ public class MapActivity extends FragmentActivity implements
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.setDrawerListener(this);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     protected void onResume(){
@@ -273,7 +279,6 @@ public class MapActivity extends FragmentActivity implements
 
     // listener for Filter toolbar button
     public void showFilters(View view) {
-        System.out.println("in showFilters"); //not working on galaxy s4
         Intent intent = new Intent(this, FilterBeaconActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
@@ -284,5 +289,27 @@ public class MapActivity extends FragmentActivity implements
         Intent intent = new Intent(this, ListBeaconActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in, R.anim.stay);
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        ParseUser user = ParseUser.getCurrentUser();
+        ((TextView)findViewById(R.id.nav_drawer_email)).setText((String)user.get("email"));
+        ((TextView)findViewById(R.id.nav_drawer_name)).setText((String)user.get("username"));
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
     }
 }
