@@ -113,13 +113,14 @@ public class LoginSignupActivity extends AppCompatActivity {
                     user = new ParseUser();
                     user.setUsername(usernametxt);
                     user.setPassword(passwordtxt);
+                    user.put("timeFilter",-1);
+                    user.put("ratingFilter",-1);
+                    user.put("distanceFilter",5);
+                    user.put("sortFilter", "distance");
                     user.signUpInBackground(new SignUpCallback() {
                         public void done(ParseException e) {
                             if (e == null) {
-                                user.put("timeFilter",-1);
-                                user.put("ratingFilter",-1);
-                                user.put("distanceFilter",5);
-                                user.put("sortFilter", "distance");
+
                                 // If user exist and authenticated, send user to Map
                                 Intent intent = new Intent(
                                         LoginSignupActivity.this,
