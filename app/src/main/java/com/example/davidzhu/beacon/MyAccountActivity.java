@@ -61,4 +61,10 @@ public class MyAccountActivity extends AppCompatActivity implements View.OnFocus
         Intent intent = new Intent(this, ChangePasswordActivity.class);
         startActivity(intent);
     }
+
+    // Handler for clicking on user settings
+    public void launchSettings(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
 }

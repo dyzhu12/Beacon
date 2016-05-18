@@ -81,7 +81,8 @@
             android:gravity="center"
             android:layout_margin="8dp"
             android:textColor="@android:color/black"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:onClick="launchSettings"/>
     </LinearLayout>
 
 </LinearLayout>

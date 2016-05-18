@@ -129,6 +129,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.davidzhu.beacon.MapActivity"/>
         </activity>
+        <activity android:name=".SettingsActivity"
+            android:parentActivityName="com.example.davidzhu.beacon.MyAccountActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.davidzhu.beacon.MyAccountActivity"/>
+        </activity>
     </application>
 
 </manifest>
